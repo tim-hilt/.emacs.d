@@ -1,7 +1,7 @@
 #+TITLE: Emacs Configuration File
 #+AUTHOR: Tim Hilt
 #+DATE: 11.10.2019
-#+STARTUP: overview
+#+STARTUP: content
 
 * Bootstrap
 
@@ -16,7 +16,6 @@
     (tooltip-mode 0))                               ; Disable the tooltips
 
   (setq-default
-   ad-redefinition-action 'accept                   ; Silence warnings for redefinition
    auto-window-vscroll nil                          ; Lighten vertical scroll
    confirm-kill-emacs 'yes-or-no-p                  ; Confirm before exiting Emacs
    cursor-in-non-selected-windows nil               ; Hide the cursor in inactive windows
@@ -24,7 +23,6 @@
    indent-tabs-mode nil                             ; Stop using tabs to indent
    tab-width 4                                      ; Set width for tabs
    inhibit-startup-screen t                         ; Disable start-up screen
-   initial-scratch-message ""                       ; Empty the initial *scratch* buffer
    mouse-yank-at-point t                            ; Yank at point rather than pointer
    ns-use-srgb-colorspace nil                       ; Don't use sRGB colors
    scroll-conservatively most-positive-fixnum       ; Always scroll by one line
@@ -49,6 +47,22 @@
    (cons "\\*Async Shell Command\\*.*"
          (cons #'display-buffer-no-window nil)))    ; Don't open new Buffer when shell-command was run
   (server-start)                                    ; Start server when opening, so that ranger can open a file
+
+  ;; Changes C-w and M-w to Kill/Copy whole line, if no region is active
+  (defadvice kill-region (before slick-cut activate compile)
+    "When called interactively with no active region, kill a single line instead."
+    (interactive
+     (if mark-active
+         (list (region-beginning) (region-end))
+       (list (line-beginning-position) (line-beginning-position 2)))))
+
+  (defadvice kill-ring-save (before slick-copy activate compile)
+    "When called interactively with no active region, copy a single line instead."
+    (interactive
+     (if mark-active
+         (list (region-beginning) (region-end))
+       (message "Copied line")
+       (list (line-beginning-position) (line-beginning-position 2)))))
 #+END_SRC
 
 ** Modify Keybindings
@@ -297,8 +311,8 @@ LSP is short for "Language-Server-Protocol". It attaches to a running language-s
   (use-package lsp-mode
     :hook (python-mode . lsp)
     ;; (latex-mode . lsp)
-    :commands lsp
-    :config)                              ; Digestif funktioniert leider nicht gemeinsam mit AucTeX, deshalb schalte ich es mal temporär ab.
+    :commands lsp)
+    ;; :config
     ;; (lsp-register-client
     ;;  (make-lsp-client :new-connection (lsp-stdio-connection "digestif")
     ;;                   :major-modes '(latex-mode plain-tex-mode)
@@ -328,10 +342,10 @@ LSP-Backend for Company-Mode
     (setq LaTeX-electric-left-right-brace t)
     (setq TeX-source-correlate-method 'synctex)
     (setq TeX-source-correlate-start-server t)
-    (add-to-list 'TeX-view-program-selection
-                 '(output-pdf "Zathura"))
     :config
-    (TeX-source-correlate-mode))
+    (TeX-source-correlate-mode)
+    (add-to-list 'TeX-view-program-selection
+                 '(output-pdf "Zathura")))
 #+END_SRC
 
 ** Version Control
@@ -344,17 +358,3 @@ Magit is a wrapper and an interface around git that makes version control in Ema
   (use-package magit
     :bind ("C-x g" . magit-status))
 #+END_SRC
-
-* TODO
-
-- [ ] Fonts
-- [X] Magit
-- [ ] AucTeX
-- [ ] LSP IDE-Features
-- [X] Vertical Minibuffer (Ivy)
-- [X] Doom-Modeline
-- [X] All-the-icons
-- [X] Hungry-Delete
-- [X] Dashboard
-- [X] Org-Bullets
-- [ ] Sudo-Edit oder Alternative
