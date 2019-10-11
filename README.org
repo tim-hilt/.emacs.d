@@ -7,64 +7,114 @@
 
 ** Defaults
 
-   #+BEGIN_SRC emacs-lisp
-     (when window-system
-       (blink-cursor-mode 0)                           ; Disable the cursor blinking
-       (scroll-bar-mode 0)                             ; Disable the scroll bar
-       (tool-bar-mode 0)                               ; Disable the tool bar
-       (menu-bar-mode 0)                               ; Disable the menu bar
-       (tooltip-mode 0))                               ; Disable the tooltips
+#+BEGIN_SRC emacs-lisp
+  (when window-system
+    (blink-cursor-mode 0)                           ; Disable the cursor blinking
+    (scroll-bar-mode 0)                             ; Disable the scroll bar
+    (tool-bar-mode 0)                               ; Disable the tool bar
+    (menu-bar-mode 0)                               ; Disable the menu bar
+    (tooltip-mode 0))                               ; Disable the tooltips
 
-     (setq-default
-      ad-redefinition-action 'accept                   ; Silence warnings for redefinition
-      auto-window-vscroll nil                          ; Lighten vertical scroll
-      confirm-kill-emacs 'yes-or-no-p                  ; Confirm before exiting Emacs
-      cursor-in-non-selected-windows nil               ; Hide the cursor in inactive windows
-      display-time-format "%H:%M"                      ; Format the time string
-      fill-column 80                                   ; Set width for automatic line breaks
-      help-window-select t                             ; Focus new help windows when opened
-      indent-tabs-mode nil                             ; Stop using tabs to indent
-      tab-width 4                                      ; Set width for tabs
-      inhibit-startup-screen t                         ; Disable start-up screen
-      initial-scratch-message ""                       ; Empty the initial *scratch* buffer
-      mouse-yank-at-point t                            ; Yank at point rather than pointer
-      ns-use-srgb-colorspace nil                       ; Don't use sRGB colors
-      scroll-conservatively most-positive-fixnum       ; Always scroll by one line
-      scroll-margin 10                                 ; Add a margin when scrolling vertically
-      select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
-      sentence-end-double-space nil                    ; End a sentence after a dot and a space
-      show-trailing-whitespace nil                     ; Display trailing whitespaces
-      split-height-threshold nil                       ; Disable vertical window splitting
-      split-width-threshold nil                        ; Disable horizontal window splitting
-      uniquify-buffer-name-style 'forward              ; Uniquify buffer names
-      window-combination-resize t                      ; Resize windows proportionally
-      ring-bell-function 'ignore                       ; Disable annoying bell sound
-      x-stretch-cursor t)                              ; Stretch cursor to the glyph width
+  (setq-default
+   ad-redefinition-action 'accept                   ; Silence warnings for redefinition
+   auto-window-vscroll nil                          ; Lighten vertical scroll
+   confirm-kill-emacs 'yes-or-no-p                  ; Confirm before exiting Emacs
+   cursor-in-non-selected-windows nil               ; Hide the cursor in inactive windows
+   fill-column 80                                   ; Set width for automatic line breaks
+   indent-tabs-mode nil                             ; Stop using tabs to indent
+   tab-width 4                                      ; Set width for tabs
+   inhibit-startup-screen t                         ; Disable start-up screen
+   initial-scratch-message ""                       ; Empty the initial *scratch* buffer
+   mouse-yank-at-point t                            ; Yank at point rather than pointer
+   ns-use-srgb-colorspace nil                       ; Don't use sRGB colors
+   scroll-conservatively most-positive-fixnum       ; Always scroll by one line
+   scroll-margin 10                                 ; Add a margin when scrolling vertically
+   select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
+   sentence-end-double-space nil                    ; End a sentence after a dot and a space
+   show-trailing-whitespace nil                     ; Display trailing whitespaces
+   split-height-threshold nil                       ; Disable vertical window splitting
+   split-width-threshold nil                        ; Disable horizontal window splitting
+   uniquify-buffer-name-style 'forward              ; Uniquify buffer names
+   window-combination-resize t                      ; Resize windows proportionally
+   ring-bell-function 'ignore                       ; Disable annoying bell sound
+   x-stretch-cursor t)                              ; Stretch cursor to the glyph width
 
-     (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
-     (global-subword-mode 1)                           ; Iterate through CamelCase words
-     (set-default-coding-systems 'utf-8)               ; Default to utf-8 encoding
-   #+END_SRC
+  (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
+  (global-subword-mode 1)                           ; Iterate through CamelCase words
+  (set-default-coding-systems 'utf-8)               ; Default to utf-8 encoding
+  (show-paren-mode 1)                               ; Show matching char
+  (electric-pair-mode 1)                            ; Insert matching character
+#+END_SRC
 
-** Modify Default Keybindings
+** Modify Keybindings
 
-   #+BEGIN_SRC emacs-lisp
-     (global-set-key
-      (kbd "C-x k") 'kill-current-buffer)              ; Kill current buffer without asking for confirmation
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x k")                     ; Kill current buffer without asking for confirmation
+                  'kill-current-buffer)
+  (global-set-key (kbd "C-c e")                     ; Opens the Config File for editing
+                  (lambda ()
+                    (interactive)
+                    (find-file "~/.emacs.d/README.org")))
+  (global-set-key (kbd "C-c r")                     ; Reloads init.el without having to restart Emacs
+                  (lambda ()
+                    (interactive)
+                    (load-file user-init-file)))
+#+END_SRC
 
 * Emacs integrated major-modes
 
 ** Org-Mode
 
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'org-mode-hook 'org-indent-mode)        ; Indent Org-Mode-Structure
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook 'org-indent-mode)        ; Indent Org-Mode-Structure
+  (add-to-list 'org-structure-template-alist        ; Template for emacs-lisp Codeblocks
+               '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+#+END_SRC
 
 * Packages
+** Init
+
+The following is used to initialize the package-repository (MELPA)
 
 #+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                      (not (gnutls-available-p))))
+         (proto (if no-ssl "http" "https")))
+    (when no-ssl
+      (warn "\
+  Your version of Emacs does not support SSL connections,
+  which is unsafe because it allows man-in-the-middle attacks.
+  There are two things you can do about this warning:
+  1. Install an Emacs version that does support SSL and be safe.
+  2. Remove this warning from your init file so you won't see it again."))
+    ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+    (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+    ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+    (when (< emacs-major-version 24)
+      ;; For important compatibility libraries like cl-lib
+      (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
+  (package-initialize)
+#+END_SRC
 
+*** Use-Package
+
+#+BEGIN_SRC emacs-lisp
+  (require 'use-package-ensure)
+  (setq use-package-always-ensure t)                ; Always apply :ensure t - Option when declaring a package via use-package
+#+END_SRC
+
+** Snippets and Autocomplete
+
+*** Yasnippet
+
+Yasnippet is a package, that let's you insert larger Code-Snippets by typing a prefix and evaluating it with <TAB>.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :config (yas-global-mode 1))
+
+  (use-package yasnippet-snippets)
 #+END_SRC
 
 ** Languages
