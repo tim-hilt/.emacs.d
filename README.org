@@ -1,4 +1,4 @@
-3#+TITLE: Emacs Configuration File
+#+TITLE: Emacs Configuration File
 #+AUTHOR: Tim Hilt
 #+DATE: 11.10.2019
 #+STARTUP: overview
@@ -48,6 +48,7 @@
    'display-buffer-alist
    (cons "\\*Async Shell Command\\*.*"
          (cons #'display-buffer-no-window nil)))    ; Don't open new Buffer when shell-command was run
+  (server-start)                                    ; Start server when opening, so that ranger can open a file
 #+END_SRC
 
 ** Modify Keybindings
@@ -63,6 +64,22 @@
                   (lambda ()
                     (interactive)
                     (load-file user-init-file)))
+  (global-set-key (kbd "C-x 2")                     ; Cursor follows, when window is split!
+                  (lambda ()
+                    (interactive)
+                    (split-window-vertically)
+                    (other-window 1)))
+  (global-set-key (kbd "C-x 3")
+                  (lambda ()(interactive)
+                    (split-window-horizontally)
+                    (other-window 1)))
+
+#+END_SRC
+
+** Faces
+
+#+BEGIN_SRC emacs-lisp
+
 #+END_SRC
 
 * Emacs integrated major-modes
@@ -266,9 +283,7 @@ Company-Mode is a Completion-Frontend
     :hook
     (prog-mode . company-mode)
     :custom
-    (company-dabbrev-downcase nil)
     (company-minimum-prefix-length 1)
-    (company-require-match nil)
     (company-tooltip-align-annotations t))
 #+END_SRC
 
@@ -308,7 +323,7 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 * TODO
 
 - [ ] Fonts
-- [ ] Magit
+- [X] Magit
 - [ ] AucTeX
 - [ ] LSP IDE-Features
 - [X] Vertical Minibuffer (Ivy)
