@@ -1,7 +1,7 @@
-#+TITLE: Emacs Configuration File
+3#+TITLE: Emacs Configuration File
 #+AUTHOR: Tim Hilt
 #+DATE: 11.10.2019
-#+STARTUP: showeverything
+#+STARTUP: overview
 
 * Bootstrap
 
@@ -44,6 +44,10 @@
   (set-default-coding-systems 'utf-8)               ; Default to utf-8 encoding
   (show-paren-mode 1)                               ; Show matching char
   (electric-pair-mode 1)                            ; Insert matching character
+  (add-to-list
+   'display-buffer-alist
+   (cons "\\*Async Shell Command\\*.*"
+         (cons #'display-buffer-no-window nil)))    ; Don't open new Buffer when shell-command was run
 #+END_SRC
 
 ** Modify Keybindings
@@ -104,6 +108,134 @@ The following is used to initialize the package-repository (MELPA)
   (setq use-package-always-ensure t)                ; Always apply :ensure t - Option when declaring a package via use-package
 #+END_SRC
 
+** GUI
+
+*** Themes
+
+The Doom-Themes are kind of the state of the art in stylish and modern Emacs-Themes. I'm using ~doom-molokai~ for consistency with my setup.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-themes
+    :init
+     ;; Global settings (defaults)
+    (setq doom-themes-enable-bold t                 ; if nil, bold is universally disabled
+          doom-themes-enable-italic t)              ; if nil, italics is universally disabled
+    :config
+    ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
+    ;; may have their own settings.
+    (load-theme 'doom-molokai t)
+
+    ;; Enable flashing mode-line on errors
+    (doom-themes-visual-bell-config)
+
+    ;; Enable custom neotree theme (all-the-icons must be installed!)
+    (doom-themes-neotree-config)
+
+    ;; or for treemacs users
+    (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+    (doom-themes-treemacs-config)
+
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config))
+#+END_SRC
+
+*** Org-Bullets
+
+The ~org-bullets~-package replaces the standard Stars of headings in org-mode by Unicode-Bullets.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :hook
+    (org-mode . (lambda () (org-bullets-mode 1))))
+#+END_SRC
+
+*** Modernizing setup
+
+The following packages just inherently make emacs look more polished and modern.
+
+**** all-the-icons
+
+Inserts Unicode symbols in locations like the menubar or the dashboard
+
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons)
+#+END_SRC
+
+**** doom-modeline
+
+Better Modeline that fits well with the theme
+
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-modeline
+    :hook (after-init . doom-modeline-mode))
+#+END_SRC
+
+**** dashboard
+
+A welcome screen that shows startup-info and other stuff
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :init
+    (setq dashboard-banner-logo-title "Hello Master. I'm here to serve you.")
+    (setq dashboard-startup-banner "~/Pictures/emacslogo.png")
+    (setq dashboard-center-content t)
+    (setq dashboard-show-shortcuts t)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-set-init-info t)
+    :config
+    (dashboard-setup-startup-hook))
+#+END_SRC
+
+** Editor enhancements
+
+*** Ivy
+
+The following packages are a plug-in-replacement for standard Emacs-Functions, that deal with things outside the buffer-window like finding a string in the buffer, opening an external file, switching buffers or executing commands.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :bind ("C-s" . swiper))
+
+  (use-package ivy
+    :init
+    (setq ivy-use-virtual-buffers t)
+    (setq enable-recursive-minibuffers t)
+    (setq ivy-count-format "(%d/%d) ")
+    :config
+    (ivy-mode 1)
+    :bind
+    (:map ivy-minibuffer-map
+          ("RET" . ivy-alt-done)))
+
+  (use-package counsel
+    :init
+    (setq counsel-find-file-ignore-regexp "\\(?:\\`[.]\\)")
+    :bind
+    ("M-x" . counsel-M-x)
+    ("C-x C-f" . counsel-find-file))
+#+END_SRC
+
+*** Rainbow-delimiters
+
+When working with a lot of brackets, parens and alike you can quickly loose track over which paren is the correct one. ~Rainbow-delimiters~ solves this problem, by coloring every paren-pair individually.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+    :hook
+    (prog-mode . rainbow-delimiters-mode))
+#+END_SRC
+
+*** Hungry delete
+
+Deletes a bunch of whitespace at once
+
+#+BEGIN_SRC emacs-lisp
+  (use-package hungry-delete
+    :config (global-hungry-delete-mode))
+#+END_SRC
+
 ** Snippets and Autocomplete
 
 *** Yasnippet
@@ -118,7 +250,7 @@ Yasnippet is a package, that let's you insert larger Code-Snippets by typing a p
   (use-package yasnippet-snippets)
 #+END_SRC
 
-** Company-Mode
+*** Company-Mode
 
 Company-Mode is a Completion-Frontend
 
@@ -140,7 +272,9 @@ Company-Mode is a Completion-Frontend
     (company-tooltip-align-annotations t))
 #+END_SRC
 
-** Lsp-Mode
+** Languages
+
+*** Lsp-Mode
 
 LSP is short for "Language-Server-Protocol". It attaches to a running language-server, that is configured outside of Emacs.
 
@@ -150,7 +284,7 @@ LSP is short for "Language-Server-Protocol". It attaches to a running language-s
     :commands lsp)
 #+END_SRC
 
-*** Company-Lsp
+**** Company-Lsp
 
 LSP-Backend for Company-Mode
 
@@ -160,4 +294,27 @@ LSP-Backend for Company-Mode
     (push 'company-lsp company-backends))
 #+END_SRC
 
-** Languages
+** Version Control
+
+*** Magit
+
+Magit is a wrapper and an interface around git that makes version control in Emacs a whole lot easier than anywhere else
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :bind ("C-x g" . magit-status))
+#+END_SRC
+
+* TODO
+
+- [ ] Fonts
+- [ ] Magit
+- [ ] AucTeX
+- [ ] LSP IDE-Features
+- [X] Vertical Minibuffer (Ivy)
+- [X] Doom-Modeline
+- [X] All-the-icons
+- [X] Hungry-Delete
+- [X] Dashboard
+- [X] Org-Bullets
+- [ ] Sudo-Edit oder Alternative
