@@ -112,9 +112,52 @@ Yasnippet is a package, that let's you insert larger Code-Snippets by typing a p
 
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
-    :config (yas-global-mode 1))
+    :hook
+    (prog-mode . yas-minor-mode))
 
   (use-package yasnippet-snippets)
+#+END_SRC
+
+** Company-Mode
+
+Company-Mode is a Completion-Frontend
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :bind
+    (:map company-active-map
+          ("TAB" . company-complete-selection)
+          ([tab] . company-complete-selection)
+          ("<right>" . company-complete-common)
+          ("C-n" . 'company-select-next)
+          ("C-p" . 'company-select-previous))
+    :hook
+    (prog-mode . company-mode)
+    :custom
+    (company-dabbrev-downcase nil)
+    (company-minimum-prefix-length 1)
+    (company-require-match nil)
+    (company-tooltip-align-annotations t))
+#+END_SRC
+
+** Lsp-Mode
+
+LSP is short for "Language-Server-Protocol". It attaches to a running language-server, that is configured outside of Emacs.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode
+    :hook (python-mode . lsp)
+    :commands lsp)
+#+END_SRC
+
+*** Company-Lsp
+
+LSP-Backend for Company-Mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-lsp
+    :config
+    (push 'company-lsp company-backends))
 #+END_SRC
 
 ** Languages
