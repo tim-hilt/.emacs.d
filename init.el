@@ -7,7 +7,8 @@
  '(company-minimum-prefix-length 1)
  '(company-tooltip-align-annotations t)
  '(package-selected-packages
-   '(auctex magit dashboard doom-modeline all-the-icons counsel swiper doom-themes company-lsp lsp-mode company yasnippet-snippets yasnippet use-package)))
+   '(julia-mode lsp-ui company-box auctex magit dashboard doom-modeline all-the-icons counsel swiper doom-themes company-lsp lsp-mode company yasnippet-snippets yasnippet use-package))
+ '(use-package-always-defer t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -47,6 +47,7 @@
    (cons "\\*Async Shell Command\\*.*"
          (cons #'display-buffer-no-window nil)))    ; Don't open new Buffer when shell-command was run
   (server-start)                                    ; Start server when opening, so that ranger can open a file
+  (global-hl-line-mode 1)                           ; Highlight the current line
 
   ;; Changes C-w and M-w to Kill/Copy whole line, if no region is active
   (defadvice kill-region (before slick-cut activate compile)
@@ -63,6 +64,8 @@
          (list (region-beginning) (region-end))
        (message "Copied line")
        (list (line-beginning-position) (line-beginning-position 2)))))
+  (setq auto-save-default nil)                      ; Disable Auto-Saving
+  (setq make-backup-files nil)                      ; Disable Backups
 #+END_SRC
 
 ** Modify Keybindings
@@ -104,6 +107,21 @@
   (add-hook 'org-mode-hook 'org-indent-mode)        ; Indent Org-Mode-Structure
   (add-to-list 'org-structure-template-alist        ; Template for emacs-lisp Codeblocks
                '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+  (setq org-src-window-setup 'other-frame)
+#+END_SRC
+
+** Dired
+
+#+BEGIN_SRC emacs-lisp
+  (put 'dired-find-alternate-file 'disabled nil)    ; disables warning
+  (with-eval-after-load 'dired
+    (define-key dired-mode-map (kbd "RET")
+      'dired-find-alternate-file)                     ; was dired-advertised-find-file
+    (define-key dired-mode-map (kbd "^")              ; was dired-up-directory
+      (lambda ()
+        (interactive)
+        (find-alternate-file ".."))))
+  (global-set-key (kbd "C-x d") 'dired-jump)        ; Open dired in current dir
 #+END_SRC
 
 * Packages
@@ -309,16 +327,17 @@ LSP is short for "Language-Server-Protocol". It attaches to a running language-s
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
-    :hook (python-mode . lsp)
-    ;; (latex-mode . lsp)
-    :commands lsp)
-    ;; :config
-    ;; (lsp-register-client
-    ;;  (make-lsp-client :new-connection (lsp-stdio-connection "digestif")
-    ;;                   :major-modes '(latex-mode plain-tex-mode)
-    ;;                   :server-id 'digestif))
-    ;; (add-to-list 'lsp-language-id-configuration '(latex-mode . "latex"))
-    ;; (add-to-list 'lsp-language-id-configuration '(plain-tex-mode . "plaintex")))
+    :hook 
+    (python-mode . lsp)
+    (LaTeX-mode . lsp)
+    :commands lsp
+    :bind
+    (:map lsp-mode-map
+          (([f12] . 'lsp-find-definition)
+           ("C-<f12>" . 'lsp-find-implementation)
+           ("M-?". 'lsp-describe-thing-at-point)
+           ("M-." . 'lsp-find-references)
+           ("C-c C-r f" . 'lsp-format-buffer))))
 #+END_SRC
 
 **** Company-Lsp
@@ -342,10 +361,17 @@ LSP-Backend for Company-Mode
     (setq LaTeX-electric-left-right-brace t)
     (setq TeX-source-correlate-method 'synctex)
     (setq TeX-source-correlate-start-server t)
+    (setq TeX-save-query nil)
     :config
     (TeX-source-correlate-mode)
     (add-to-list 'TeX-view-program-selection
                  '(output-pdf "Zathura")))
+#+END_SRC
+
+*** Julia
+
+#+BEGIN_SRC emacs-lisp
+  (use-package julia-mode)
 #+END_SRC
 
 ** Version Control
@@ -358,3 +384,15 @@ Magit is a wrapper and an interface around git that makes version control in Ema
   (use-package magit
     :bind ("C-x g" . magit-status))
 #+END_SRC
+
+
+
+
+
+
+
+
+
+
+
+
