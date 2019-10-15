@@ -90,7 +90,8 @@
                   (lambda ()(interactive)
                     (split-window-horizontally)
                     (other-window 1)))
-
+  (global-set-key (kbd "C-a")
+                  'back-to-indentation)
 #+END_SRC
 
 ** Faces
@@ -252,6 +253,7 @@ The following packages are a plug-in-replacement for standard Emacs-Functions, t
     (setq ivy-use-virtual-buffers t)
     (setq enable-recursive-minibuffers t)
     (setq ivy-count-format "(%d/%d) ")
+    (setq ivy-initial-inputs-alist nil)
     :config
     (ivy-mode 1)
     :bind
@@ -372,6 +374,12 @@ LSP-Backend for Company-Mode
 
 #+BEGIN_SRC emacs-lisp
   (use-package julia-mode)
+#+END_SRC
+
+*** Matlab
+
+#+BEGIN_SRC emacs-lisp
+  (use-package matlab-mode)
 #+END_SRC
 
 ** Version Control
