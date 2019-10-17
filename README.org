@@ -393,14 +393,10 @@ Magit is a wrapper and an interface around git that makes version control in Ema
     :bind ("C-x g" . magit-status))
 #+END_SRC
 
+* TODO
 
-
-
-
-
-
-
-
-
-
-
+- [ ] Close Magit Buffer with C-x k
+- [ ] visual-regexp/ -steroids
+- [ ] Expand-region
+- [ ] don't respect . and .. in counsel
+- [ ] M-t for alacritty&
