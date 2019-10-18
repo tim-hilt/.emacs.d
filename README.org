@@ -16,6 +16,32 @@ The last section contains a /TODO/-list with features that i wish to implement, 
 well as a time stamp that contains when the feature was added to the list and when 
 it was implemented.
 
+* Table of contents                                                 :TOC:
+- [[#intro][Intro]]
+- [[#bootstrap][Bootstrap]]
+  - [[#defaults][Defaults]]
+  - [[#modify-keybindings][Modify Keybindings]]
+  - [[#faces][Faces]]
+- [[#emacs-integrated-major-modes][Emacs integrated major-modes]]
+  - [[#org-mode][Org-Mode]]
+  - [[#dired][Dired]]
+- [[#packages][Packages]]
+  - [[#init][Init]]
+  - [[#gui][GUI]]
+  - [[#editor-enhancements][Editor enhancements]]
+  - [[#snippets-and-autocomplete][Snippets and Autocomplete]]
+  - [[#languages][Languages]]
+  - [[#version-control][Version Control]]
+- [[#wish-list][Wish-list]]
+  - [[#visual-regexp--steroids][visual-regexp/ -steroids]]
+  - [[#expand-region][Expand-region]]
+  - [[#resize-font-with-c--c--][Resize Font with C-+ C--]]
+  - [[#multiple-cursors][Multiple cursors]]
+  - [[#cancelled-close-magit-buffer-with-c-x-k][CANCELLED Close Magit Buffer with C-x k]]
+  - [[#sudo-edit][sudo-edit]]
+  - [[#m-t-for-alacritty][M-t for alacritty&]]
+  - [[#dont-respect--and--in-counsel][don't respect . and .. in counsel]]
+
 * Bootstrap
 
 ** Defaults
@@ -125,7 +151,8 @@ it was implemented.
   (add-hook 'org-mode-hook 'org-indent-mode)        ; Indent Org-Mode-Structure
   (add-to-list 'org-structure-template-alist        ; Template for emacs-lisp Codeblocks
                '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
-  (setq org-src-window-setup 'other-frame)
+  (setq org-todo-keywords
+        '((sequence "TODO" "|" "DONE" "CANCELLED(c@)")))
 #+END_SRC
 
 ** Dired
@@ -216,6 +243,16 @@ The ~org-bullets~-package replaces the standard Stars of headings in org-mode by
     (org-mode . (lambda () (org-bullets-mode 1))))
 #+END_SRC
 
+*** org-toc-mode
+
+Adds a table of contents at the top of an org-file
+
+#+BEGIN_SRC emacs-lisp
+  (use-package toc-org
+    :hook
+    (org-mode . toc-org-mode))
+#+END_SRC
+
 *** Modernizing setup
 
 The following packages just inherently make emacs look more polished and modern.
@@ -304,6 +341,14 @@ Deletes a bunch of whitespace at once
 #+BEGIN_SRC emacs-lisp
   (use-package hungry-delete
     :config (global-hungry-delete-mode))
+#+END_SRC
+
+*** Sudo-edit
+
+Allows the user to edit files with root-privileges
+
+#+BEGIN_SRC emacs-lisp
+  (use-package sudo-edit)
 #+END_SRC
 
 ** Snippets and Autocomplete
@@ -414,22 +459,27 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 
 * Wish-list
 :PROPERTIES:
-:LOGGING:  TODO(!) WAIT(!) DONE(!) CANCELED(!)
+:LOGGING:  TODO(!) DONE(!) CANCELLED(c@)
 :END:
 
-** TODO Close Magit Buffer with C-x k
-- State "TODO"       from              [2019-10-18 Fri 22:50]
 ** TODO visual-regexp/ -steroids
-- State "TODO"       from              [2019-10-18 Fri 22:49]
+- State "TODO"       from              [2019-10-18 Fri 23:11]
 ** TODO Expand-region
 - State "TODO"       from              [2019-10-18 Fri 22:49]
 ** TODO Resize Font with C-+ C--
 - State "TODO"       from              [2019-10-18 Fri 22:49]
-** TODO sudo-edit
+** TODO Multiple cursors
+- State "TODO"       from              [2019-10-18 Fri 23:34]
+** CANCELLED Close Magit Buffer with C-x k
+- State "CANCELLED"  from "DONE"       [2019-10-18 Fri 23:01] \\
+  You can also just type "q" to call ~magit-bury-buffer~ and the buffer will be hidden. Should this come up again, one can look at [[http://manuel-uberti.github.io/emacs/2018/02/17/magit-bury-buffer/][Manuel Uebertis Blog-post]] concerning the theme.
+- State "TODO"       from              [2019-10-18 Fri 23:01]
+** DONE sudo-edit
+- State "DONE"       from "TODO"       [2019-10-18 Fri 23:20]
 - State "TODO"       from              [2019-10-18 Fri 22:49]
 ** DONE M-t for alacritty&
 - State "DONE"       from "TODO"       [2019-10-18 Fri 22:49]
 - State "TODO"       from              [2019-10-18 Fri 22:49]
 ** DONE don't respect . and .. in counsel
-- State "DONE"       from "TODO"       [2019-10-18 Fri 22:49]
-- State "TODO"       from              [2019-10-18 Fri 22:49]
+- State "DONE"       from "TODO"       [2019-10-18 Fri 22:57]
+- State "TODO"       from              [2019-10-18 Fri 22:54]
