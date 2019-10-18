@@ -3,6 +3,19 @@
 #+DATE: 11.10.2019
 #+STARTUP: content
 
+* Intro
+
+This is my personal ~.emacs~. Below you can see almost all of the settings, 
+that i've applied to my Emacs configuration. I've rewritten my configuration, 
+because i deleted the previous one. This is the reason why you can read this.
+I decided to backup and publish my configuration for Emacs as a backup for myself
+but also for giving back to the community that this config is built on. I hope to 
+educate and benefit a few users on the way.
+
+The last section contains a /TODO/-list with features that i wish to implement, as 
+well as a time stamp that contains when the feature was added to the list and when 
+it was implemented.
+
 * Bootstrap
 
 ** Defaults
@@ -92,6 +105,10 @@
                     (other-window 1)))
   (global-set-key (kbd "C-a")
                   'back-to-indentation)
+  (global-set-key (kbd "M-RET")
+                  '(lambda ()
+                     (interactive)
+                     (shell-command "alacritty&")))
 #+END_SRC
 
 ** Faces
@@ -242,6 +259,7 @@ A welcome screen that shows startup-info and other stuff
 
 *** Ivy
 
+
 The following packages are a plug-in-replacement for standard Emacs-Functions, that deal with things outside the buffer-window like finding a string in the buffer, opening an external file, switching buffers or executing commands.
 
 #+BEGIN_SRC emacs-lisp
@@ -254,6 +272,7 @@ The following packages are a plug-in-replacement for standard Emacs-Functions, t
     (setq enable-recursive-minibuffers t)
     (setq ivy-count-format "(%d/%d) ")
     (setq ivy-initial-inputs-alist nil)
+    (setq ivy-extra-directories ())
     :config
     (ivy-mode 1)
     :bind
@@ -379,7 +398,7 @@ LSP-Backend for Company-Mode
 *** Matlab
 
 #+BEGIN_SRC emacs-lisp
-  (use-package matlab-mode)
+  ;; (use-package matlab-mode)
 #+END_SRC
 
 ** Version Control
@@ -393,10 +412,24 @@ Magit is a wrapper and an interface around git that makes version control in Ema
     :bind ("C-x g" . magit-status))
 #+END_SRC
 
-* TODO
+* Wish-list
+:PROPERTIES:
+:LOGGING:  TODO(!) WAIT(!) DONE(!) CANCELED(!)
+:END:
 
-- [ ] Close Magit Buffer with C-x k
-- [ ] visual-regexp/ -steroids
-- [ ] Expand-region
-- [ ] don't respect . and .. in counsel
-- [ ] M-t for alacritty&
+** TODO Close Magit Buffer with C-x k
+- State "TODO"       from              [2019-10-18 Fri 22:50]
+** TODO visual-regexp/ -steroids
+- State "TODO"       from              [2019-10-18 Fri 22:49]
+** TODO Expand-region
+- State "TODO"       from              [2019-10-18 Fri 22:49]
+** TODO Resize Font with C-+ C--
+- State "TODO"       from              [2019-10-18 Fri 22:49]
+** TODO sudo-edit
+- State "TODO"       from              [2019-10-18 Fri 22:49]
+** DONE M-t for alacritty&
+- State "DONE"       from "TODO"       [2019-10-18 Fri 22:49]
+- State "TODO"       from              [2019-10-18 Fri 22:49]
+** DONE don't respect . and .. in counsel
+- State "DONE"       from "TODO"       [2019-10-18 Fri 22:49]
+- State "TODO"       from              [2019-10-18 Fri 22:49]
