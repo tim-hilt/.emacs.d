@@ -33,14 +33,14 @@ it was implemented.
   - [[#languages][Languages]]
   - [[#version-control][Version Control]]
 - [[#wish-list][Wish-list]]
-  - [[#visual-regexp--steroids][visual-regexp/ -steroids]]
-  - [[#expand-region][Expand-region]]
-  - [[#resize-font-with-c--c--][Resize Font with C-+ C--]]
-  - [[#multiple-cursors][Multiple cursors]]
   - [[#cancelled-close-magit-buffer-with-c-x-k][CANCELLED Close Magit Buffer with C-x k]]
   - [[#sudo-edit][sudo-edit]]
   - [[#m-t-for-alacritty][M-t for alacritty&]]
   - [[#dont-respect--and--in-counsel][don't respect . and .. in counsel]]
+  - [[#cancelled-resize-font-with-c--c--][CANCELLED Resize Font with C-+ C--]]
+  - [[#visual-regexp--steroids][visual-regexp/ -steroids]]
+  - [[#expand-region][Expand-region]]
+  - [[#multiple-cursors][Multiple cursors]]
 
 * Bootstrap
 
@@ -351,6 +351,41 @@ Allows the user to edit files with root-privileges
   (use-package sudo-edit)
 #+END_SRC
 
+*** Visual-regexp
+
+Helps the user to replace a pattern of text and visualizes the input-pattern. ~visual-regexp-steroids~ adds the ability to use Python- and PC-Regex.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package visual-regexp
+    :bind
+    ("C-x C-r" . 'vr/query-replace))
+
+  (use-package visual-regexp-steroids
+    :init
+    (setq vr/engine 'pcre2el))
+#+END_SRC
+
+*** Expand-region
+
+Allows the user to expand the marked region inside of paired delimiters.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package expand-region
+    :bind
+    ("C-." . 'er/expand-region)
+    ("C-:" . 'er/contract-region))
+#+END_SRC
+
+*** Multiple cursors
+
+Pretty much selve explanatory; adds additional cursors to words/lines
+
+#+BEGIN_SRC emacs-lisp
+  (use-package multiple-cursors
+    :bind
+    ("M-SPC" . mc/mark-next-like-this))
+#+END_SRC
+
 ** Snippets and Autocomplete
 
 *** Yasnippet
@@ -462,14 +497,6 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 :LOGGING:  TODO(!) DONE(!) CANCELLED(c@)
 :END:
 
-** TODO visual-regexp/ -steroids
-- State "TODO"       from              [2019-10-18 Fri 23:11]
-** TODO Expand-region
-- State "TODO"       from              [2019-10-18 Fri 22:49]
-** TODO Resize Font with C-+ C--
-- State "TODO"       from              [2019-10-18 Fri 22:49]
-** TODO Multiple cursors
-- State "TODO"       from              [2019-10-18 Fri 23:34]
 ** CANCELLED Close Magit Buffer with C-x k
 - State "CANCELLED"  from "DONE"       [2019-10-18 Fri 23:01] \\
   You can also just type "q" to call ~magit-bury-buffer~ and the buffer will be hidden. Should this come up again, one can look at [[http://manuel-uberti.github.io/emacs/2018/02/17/magit-bury-buffer/][Manuel Uebertis Blog-post]] concerning the theme.
@@ -483,3 +510,17 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 ** DONE don't respect . and .. in counsel
 - State "DONE"       from "TODO"       [2019-10-18 Fri 22:57]
 - State "TODO"       from              [2019-10-18 Fri 22:54]
+** CANCELLED Resize Font with C-+ C--
+- State "CANCELLED"  from "TODO"       [2019-10-18 Fri 23:55] \\
+  Possible with ~C-x C-+~, ~C-x C--~ and resetting with ~C-x C-0~
+- State "TODO"       from              [2019-10-18 Fri 22:49]
+** DONE visual-regexp/ -steroids
+- State "DONE"       from "TODO"       [2019-10-19 Sat 00:04]
+- State "TODO"       from              [2019-10-18 Fri 23:11]
+** DONE Expand-region
+- State "DONE"       from "TODO"       [2019-10-19 Sat 00:09]
+- State "TODO"       from              [2019-10-18 Fri 22:49]
+** DONE Multiple cursors
+- State "DONE"       from "TODO"       [2019-10-19 Sat 00:21]
+- State "TODO"       from              [2019-10-18 Fri 23:34]
+
