@@ -41,6 +41,9 @@ it was implemented.
   - [[#visual-regexp--steroids][visual-regexp/ -steroids]]
   - [[#expand-region][Expand-region]]
   - [[#multiple-cursors][Multiple cursors]]
+  - [[#run-python-with-c-c-c-a][Run python with C-c C-a]]
+  - [[#cursor-jumps-around-when-writing-use-package][Cursor jumps around when writing "use-package"]]
+  - [[#save-and-reload-config-file-with-c-r][Save and reload config-file with C-r]]
 
 * Bootstrap
 
@@ -87,6 +90,7 @@ it was implemented.
          (cons #'display-buffer-no-window nil)))    ; Don't open new Buffer when shell-command was run
   (server-start)                                    ; Start server when opening, so that ranger can open a file
   (global-hl-line-mode 1)                           ; Highlight the current line
+  (global-visual-line-mode t)                       ; Wrap lines in every case, also when using org-mode. Messes up tables though.
 
   ;; Changes C-w and M-w to Kill/Copy whole line, if no region is active
   (defadvice kill-region (before slick-cut activate compile)
@@ -386,6 +390,22 @@ Pretty much selve explanatory; adds additional cursors to words/lines
     ("M-SPC" . mc/mark-next-like-this))
 #+END_SRC
 
+*** which-key
+
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :config
+    (which-key-mode))
+#+END_SRC
+
+*** Disable-mouse-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package disable-mouse
+    :config
+    (global-disable-mouse-mode))
+#+END_SRC
+
 ** Snippets and Autocomplete
 
 *** Yasnippet
@@ -463,6 +483,8 @@ LSP-Backend for Company-Mode
     (setq TeX-source-correlate-method 'synctex)
     (setq TeX-source-correlate-start-server t)
     (setq TeX-save-query nil)
+    (setq-default TeX-engine 'xetex)
+    (setq-default TeX-PDF-mode t)
     :config
     (TeX-source-correlate-mode)
     (add-to-list 'TeX-view-program-selection
@@ -524,3 +546,9 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "DONE"       from "TODO"       [2019-10-19 Sat 00:21]
 - State "TODO"       from              [2019-10-18 Fri 23:34]
 
+** TODO Run python with C-c C-a
+- State "TODO"       from              [2019-10-26 Sat 08:19]
+** TODO Cursor jumps around when writing "use-package"
+- State "TODO"       from              [2019-10-26 Sat 08:19]
+** TODO Save and reload config-file with C-r
+- State "TODO"       from              [2019-10-26 Sat 08:20]
