@@ -20,6 +20,7 @@ it was implemented.
 - [[#intro][Intro]]
 - [[#bootstrap][Bootstrap]]
   - [[#defaults][Defaults]]
+  - [[#own-functions][Own functions]]
   - [[#modify-keybindings][Modify Keybindings]]
   - [[#faces][Faces]]
 - [[#emacs-integrated-major-modes][Emacs integrated major-modes]]
@@ -43,7 +44,9 @@ it was implemented.
   - [[#multiple-cursors][Multiple cursors]]
   - [[#run-python-with-c-c-c-a][Run python with C-c C-a]]
   - [[#cursor-jumps-around-when-writing-use-package][Cursor jumps around when writing "use-package"]]
-  - [[#save-and-reload-config-file-with-c-r][Save and reload config-file with C-r]]
+  - [[#save-and-reload-config-file-with-c-c-r][Save and reload config-file with C-c r]]
+  - [[#correct-highlight-color-in-ivy][Correct highlight-color in ivy]]
+  - [[#digestif-errors-when-c-w-or-c-k][Digestif errors when C-w or C-k]]
 
 * Bootstrap
 
@@ -111,6 +114,17 @@ it was implemented.
   (setq make-backup-files nil)                      ; Disable Backups
 #+END_SRC
 
+** Own functions
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-run-python ()
+    (interactive)
+    (shell-command
+     (concat
+      "alacritty -e ipython -i "
+      (buffer-file-name) "&")))
+#+END_SRC
+
 ** Modify Keybindings
 
 #+BEGIN_SRC emacs-lisp
@@ -119,6 +133,7 @@ it was implemented.
   (global-set-key (kbd "C-c e")                     ; Opens the Config File for editing
                   (lambda ()
                     (interactive)
+                    (save-buffer "README.org")
                     (find-file "~/.emacs.d/README.org")))
   (global-set-key (kbd "C-c r")                     ; Reloads init.el without having to restart Emacs
                   (lambda ()
@@ -139,6 +154,8 @@ it was implemented.
                   '(lambda ()
                      (interactive)
                      (shell-command "alacritty&")))
+  (define-key python-mode-map
+    (kbd "C-c C-a") 'my-run-python)
 #+END_SRC
 
 ** Faces
@@ -450,7 +467,7 @@ LSP is short for "Language-Server-Protocol". It attaches to a running language-s
   (use-package lsp-mode
     :hook 
     (python-mode . lsp)
-    (LaTeX-mode . lsp)
+    ;; (LaTeX-mode . lsp)
     :commands lsp
     :bind
     (:map lsp-mode-map
@@ -459,6 +476,9 @@ LSP is short for "Language-Server-Protocol". It attaches to a running language-s
            ("M-?". 'lsp-describe-thing-at-point)
            ("M-." . 'lsp-find-references)
            ("C-c C-r f" . 'lsp-format-buffer))))
+  ;; Doesn't play well unfortunately
+  ;; (when (executable-find "ipython")                 ;; Not related to the package, sets python interpreter to ipython
+  ;;   (setq python-shell-interpreter "ipython"))
 #+END_SRC
 
 **** Company-Lsp
@@ -546,9 +566,16 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "DONE"       from "TODO"       [2019-10-19 Sat 00:21]
 - State "TODO"       from              [2019-10-18 Fri 23:34]
 
-** TODO Run python with C-c C-a
+** DONE Run python with C-c C-a
+- State "DONE"       from "TODO"       [2019-10-29 Tue 17:23]
+- State "TODO"       from "TODO"       [2019-10-29 Tue 17:22]
 - State "TODO"       from              [2019-10-26 Sat 08:19]
 ** TODO Cursor jumps around when writing "use-package"
 - State "TODO"       from              [2019-10-26 Sat 08:19]
-** TODO Save and reload config-file with C-r
+** DONE Save and reload config-file with C-c r
+- State "DONE"       from "TODO"       [2019-10-29 Tue 17:04]
 - State "TODO"       from              [2019-10-26 Sat 08:20]
+** TODO Correct highlight-color in ivy
+- State "TODO"       from              [2019-10-26 Sat 10:54]
+** TODO Digestif errors when C-w or C-k
+- State "TODO"       from              [2019-10-26 Sat 12:16]
