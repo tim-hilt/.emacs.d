@@ -305,7 +305,7 @@ A welcome screen that shows startup-info and other stuff
   (use-package dashboard
     :init
     (setq dashboard-banner-logo-title "Hello Master. I'm here to serve you.")
-    (setq dashboard-startup-banner "~/Pictures/emacslogo.png")
+    (setq dashboard-startup-banner "./emacslogo.png")
     (setq dashboard-center-content t)
     (setq dashboard-show-shortcuts t)
     (setq dashboard-set-heading-icons t)
