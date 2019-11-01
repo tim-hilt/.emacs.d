@@ -47,6 +47,7 @@ it was implemented.
   - [[#save-and-reload-config-file-with-c-c-r][Save and reload config-file with C-c r]]
   - [[#correct-highlight-color-in-ivy][Correct highlight-color in ivy]]
   - [[#digestif-errors-when-c-w-or-c-k][Digestif errors when C-w or C-k]]
+  - [[#double-pressing--or-_-in-auctex-inserts-_-or--respectively][Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively]]
 
 * Bootstrap
 
@@ -154,6 +155,7 @@ it was implemented.
                   '(lambda ()
                      (interactive)
                      (shell-command "alacritty&")))
+  (require 'python)
   (define-key python-mode-map
     (kbd "C-c C-a") 'my-run-python)
 #+END_SRC
@@ -351,8 +353,7 @@ When working with a lot of brackets, parens and alike you can quickly loose trac
 
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
-    :hook
-    (prog-mode . rainbow-delimiters-mode))
+    :hook (prog-mode . rainbow-delimiters-mode))
 #+END_SRC
 
 *** Hungry delete
@@ -579,3 +580,5 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from              [2019-10-26 Sat 10:54]
 ** TODO Digestif errors when C-w or C-k
 - State "TODO"       from              [2019-10-26 Sat 12:16]
+** TODO Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively
+- State "TODO"       from              [2019-10-30 Wed 07:56]
