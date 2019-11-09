@@ -134,11 +134,11 @@ it was implemented.
   (global-set-key (kbd "C-c e")                     ; Opens the Config File for editing
                   (lambda ()
                     (interactive)
-                    (save-buffer "README.org")
                     (find-file "~/.emacs.d/README.org")))
   (global-set-key (kbd "C-c r")                     ; Reloads init.el without having to restart Emacs
                   (lambda ()
                     (interactive)
+                    (save-buffer "README.org")
                     (load-file user-init-file)))
   (global-set-key (kbd "C-x 2")                     ; Cursor follows, when window is split!
                   (lambda ()
