@@ -1,3 +1,4 @@
+
 #+TITLE: Emacs Configuration File
 #+AUTHOR: Tim Hilt
 #+DATE: 11.10.2019
@@ -48,6 +49,7 @@ it was implemented.
   - [[#correct-highlight-color-in-ivy][Correct highlight-color in ivy]]
   - [[#digestif-errors-when-c-w-or-c-k][Digestif errors when C-w or C-k]]
   - [[#double-pressing--or-_-in-auctex-inserts-_-or--respectively][Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively]]
+  - [[#configure-visual-regexp-steroids-correctly][Configure visual regexp steroids correctly]]
 
 * Bootstrap
 
@@ -124,6 +126,16 @@ it was implemented.
      (concat
       "alacritty -e ipython -i "
       (buffer-file-name) "&")))
+
+  (defun my-compile-pandoc ()
+    (interactive)
+    (shell-command
+     (concat
+      "pandoc "
+      (file-name-sans-extension (buffer-file-name))
+      ".md -o "
+      (file-name-sans-extension (buffer-file-name))
+      ".pdf")))
 #+END_SRC
 
 ** Modify Keybindings
@@ -146,18 +158,38 @@ it was implemented.
                     (split-window-vertically)
                     (other-window 1)))
   (global-set-key (kbd "C-x 3")
-                  (lambda ()(interactive)
+                  (lambda ()
+                    (interactive)
                     (split-window-horizontally)
                     (other-window 1)))
   (global-set-key (kbd "C-a")
                   'back-to-indentation)
   (global-set-key (kbd "M-RET")
-                  '(lambda ()
-                     (interactive)
-                     (shell-command "alacritty&")))
+                  (lambda ()
+                    (interactive)
+                    (shell-command "alacritty&")))
   (require 'python)
   (define-key python-mode-map
-    (kbd "C-c C-a") 'my-run-python)
+    (kbd "C-c C-a")
+    (lambda ()
+      (interactive)
+      (shell-command
+       (concat
+        "alacritty -e ipython -i "
+        (buffer-file-name) "&"))))
+
+  (require 'markdown-mode)
+  (define-key markdown-mode-map
+    (kbd "C-c C-a")
+    (lambda ()
+      (interactive)
+      (shell-command
+       (concat
+        "pandoc "
+        (file-name-sans-extension (buffer-file-name))
+        ".md -o "
+        (file-name-sans-extension (buffer-file-name))
+        ".pdf"))))
 #+END_SRC
 
 ** Faces
@@ -305,7 +337,7 @@ A welcome screen that shows startup-info and other stuff
   (use-package dashboard
     :init
     (setq dashboard-banner-logo-title "Hello Master. I'm here to serve you.")
-    (setq dashboard-startup-banner "./emacslogo.png")
+    (setq dashboard-startup-banner "~/.emacs.d/emacslogo.png")
     (setq dashboard-center-content t)
     (setq dashboard-show-shortcuts t)
     (setq dashboard-set-heading-icons t)
@@ -582,3 +614,5 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from              [2019-10-26 Sat 12:16]
 ** TODO Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively
 - State "TODO"       from              [2019-10-30 Wed 07:56]
+** TODO Configure visual regexp steroids correctly
+- State "TODO"       from              [2019-11-11 Mon 07:48]
