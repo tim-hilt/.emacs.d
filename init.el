@@ -7,8 +7,7 @@
  '(company-minimum-prefix-length 1)
  '(company-tooltip-align-annotations t)
  '(package-selected-packages
-   (quote
-    (disable-mouse which-key org-bullets sudo-edit hungry-delete rainbow-delimiters multiple-cursors expand-region visual-regexp-steroids visual-regexp toc-org org-toc-mode matlab-mode julia-mode lsp-ui company-box auctex magit dashboard doom-modeline all-the-icons counsel swiper doom-themes company-lsp lsp-mode company yasnippet-snippets yasnippet use-package)))
+   '(fish-mode csv-mode json-mode yaml-mode disable-mouse which-key org-bullets sudo-edit hungry-delete rainbow-delimiters multiple-cursors expand-region visual-regexp-steroids visual-regexp toc-org org-toc-mode matlab-mode julia-mode lsp-ui company-box auctex magit dashboard doom-modeline all-the-icons counsel swiper doom-themes company-lsp lsp-mode company yasnippet-snippets yasnippet use-package))
  '(use-package-always-defer t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

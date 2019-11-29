@@ -50,6 +50,10 @@ it was implemented.
   - [[#digestif-errors-when-c-w-or-c-k][Digestif errors when C-w or C-k]]
   - [[#double-pressing--or-_-in-auctex-inserts-_-or--respectively][Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively]]
   - [[#configure-visual-regexp-steroids-correctly][Configure visual regexp steroids correctly]]
+  - [[#better-elisp-autocompletion][Better elisp-autocompletion]]
+  - [[#latex-autocompletion][LaTeX autocompletion]]
+  - [[#split-org-mode-code-block-to-the-right][Split org-mode code-block to the right]]
+  - [[#c-x-c-b-to-read-whole-list-of-buffers][C-x C-b to read whole list of buffers]]
 
 * Bootstrap
 
@@ -164,10 +168,10 @@ it was implemented.
                     (other-window 1)))
   (global-set-key (kbd "C-a")
                   'back-to-indentation)
-  (global-set-key (kbd "M-RET")
-                  (lambda ()
-                    (interactive)
-                    (shell-command "alacritty&")))
+  ;; (global-set-key (kbd "M-RET")
+  ;;                 (lambda ()
+  ;;                   (interactive)
+  ;;                   (shell-command "alacritty&")))
   (require 'python)
   (define-key python-mode-map
     (kbd "C-c C-a")
@@ -556,6 +560,20 @@ LSP-Backend for Company-Mode
   ;; (use-package matlab-mode)
 #+END_SRC
 
+*** Structured Data Modes
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode)
+  (use-package json-mode)
+  (use-package csv-mode)
+#+END_SRC
+
+*** fish
+
+#+BEGIN_SRC emacs-lisp
+  (use-package fish-mode)
+#+END_SRC
+
 ** Version Control
 
 *** Magit
@@ -616,3 +634,11 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from              [2019-10-30 Wed 07:56]
 ** TODO Configure visual regexp steroids correctly
 - State "TODO"       from              [2019-11-11 Mon 07:48]
+** TODO Better elisp-autocompletion
+- State "TODO"       from              [2019-11-29 Fri 22:38]
+** TODO LaTeX autocompletion
+- State "TODO"       from              [2019-11-29 Fri 22:39]
+** TODO Split org-mode code-block to the right
+- State "TODO"       from              [2019-11-29 Fri 22:42]
+** TODO C-x C-b to read whole list of buffers
+- State "TODO"       from              [2019-11-29 Fri 22:43]
