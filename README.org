@@ -31,6 +31,7 @@ it was implemented.
   - [[#gui][GUI]]
   - [[#editor-enhancements][Editor enhancements]]
   - [[#snippets-and-autocomplete][Snippets and Autocomplete]]
+  - [[#linting][Linting]]
   - [[#languages][Languages]]
   - [[#version-control][Version Control]]
 - [[#wish-list][Wish-list]]
@@ -69,6 +70,9 @@ it was implemented.
     (tool-bar-mode 0)                               ; Disable the tool bar
     (menu-bar-mode 0)                               ; Disable the menu bar
     (tooltip-mode 0))                               ; Disable the tooltips
+
+  (when (version<= "26.0.50" emacs-version )        ; Enable line numbers
+    (global-display-line-numbers-mode))
 
   (setq-default
    auto-window-vscroll nil                          ; Lighten vertical scroll
@@ -358,7 +362,6 @@ A welcome screen that shows startup-info and other stuff
 
 *** Ivy
 
-
 The following packages are a plug-in-replacement for standard Emacs-Functions, that deal with things outside the buffer-window like finding a string in the buffer, opening an external file, switching buffers or executing commands.
 
 #+BEGIN_SRC emacs-lisp
@@ -497,6 +500,14 @@ Company-Mode is a Completion-Frontend
     (company-tooltip-align-annotations t))
 #+END_SRC
 
+** Linting
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :hook (prog-mode . flycheck-mode))
+#+END_SRC
+
+
 ** Languages
 
 *** Lsp-Mode
@@ -562,7 +573,7 @@ LSP-Backend for Company-Mode
 #+BEGIN_SRC emacs-lisp
   ;; (use-package matlab-mode)
 #+END_SRC
-
+nnn
 *** Structured Data Modes
 
 #+BEGIN_SRC emacs-lisp
@@ -586,6 +597,23 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :bind ("C-x g" . magit-status))
+#+END_SRC
+
+*** git-gutter-fringe
+
+#+BEGIN_SRC emacs-lisp
+  (use-package git-gutter-fringe
+    :init (git-gutter-mode)
+    ;; subtle diff indicators in the fringe
+    ;; places the git gutter outside the margins.
+    (setq-default fringes-outside-margins t)
+    ;; thin fringe bitmaps
+    (define-fringe-bitmap 'git-gutter-fr:added [224]
+      nil nil '(center repeated))
+    (define-fringe-bitmap 'git-gutter-fr:modified [224]
+      nil nil '(center repeated))
+    (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
+      nil nil 'bottom))
 #+END_SRC
 
 * Wish-list
@@ -645,7 +673,8 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from              [2019-11-29 Fri 22:42]
 ** TODO C-x C-b to read whole list of buffers
 - State "TODO"       from              [2019-11-29 Fri 22:43]
-** TODO Git changes in left margin
+** DONE Git changes in left margin
+- State "DONE"       from "TODO"       [2020-01-20 Mo 21:23]
 - State "TODO"       from "TODO"       [2020-01-20 Mo 20:55]
 ** TODO disable gc at startup
 - State "TODO"       from              [2020-01-20 Mo 20:56]
