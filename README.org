@@ -52,12 +52,12 @@ it was implemented.
   - [[#configure-visual-regexp-steroids-correctly][Configure visual regexp steroids correctly]]
   - [[#better-elisp-autocompletion][Better elisp-autocompletion]]
   - [[#latex-autocompletion][LaTeX autocompletion]]
-  - [[#split-org-mode-code-block-to-the-right][Split org-mode code-block to the right]]
+  - [[#open-org-mode-code-block-in-fullscreen-also-magit][Open org-mode-code-block in fullscreen; also Magit]]
   - [[#c-x-c-b-to-read-whole-list-of-buffers][C-x C-b to read whole list of buffers]]
   - [[#git-changes-in-left-margin][Git changes in left margin]]
   - [[#disable-gc-at-startup][disable gc at startup]]
   - [[#doom-emacs-level-linting-with-hovers-and-shit][doom-emacs-level linting with hovers and shit]]
-  - [[#same-kind-of-overview-when-switching-buffers][Same kind of overview, when switching buffers]]
+  - [[#same-kind-of-overview-when-switching-buffers-as-in-org-mode][Same kind of overview, when switching buffers as in org-mode]]
 
 * Bootstrap
 
@@ -72,7 +72,7 @@ it was implemented.
     (tooltip-mode 0))                               ; Disable the tooltips
 
   (when (version<= "26.0.50" emacs-version )        ; Enable line numbers
-    (global-display-line-numbers-mode))
+    (display-line-numbers-mode))
 
   (setq-default
    auto-window-vscroll nil                          ; Lighten vertical scroll
@@ -504,9 +504,12 @@ Company-Mode is a Completion-Frontend
 
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
-    :hook (prog-mode . flycheck-mode))
-#+END_SRC
+    :config (global-flycheck-mode +1))
 
+  (use-package flycheck-popup-tip
+    :config
+    (add-hook 'flycheck-mode-hook 'flycheck-popup-tip-mode))
+#+END_SRC
 
 ** Languages
 
@@ -596,6 +599,7 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
+    :config (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
     :bind ("C-x g" . magit-status))
 #+END_SRC
 
@@ -672,7 +676,8 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from              [2019-11-29 Fri 22:38]
 ** TODO LaTeX autocompletion
 - State "TODO"       from              [2019-11-29 Fri 22:39]
-** TODO Split org-mode code-block to the right
+** DONE Open org-mode-code-block in fullscreen; also Magit
+- State "DONE"       from "TODO"       [2020-01-20 Mo 22:10]
 - State "TODO"       from              [2019-11-29 Fri 22:42]
 ** TODO C-x C-b to read whole list of buffers
 - State "TODO"       from              [2019-11-29 Fri 22:43]
@@ -681,7 +686,8 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from "TODO"       [2020-01-20 Mo 20:55]
 ** TODO disable gc at startup
 - State "TODO"       from              [2020-01-20 Mo 20:56]
-** TODO doom-emacs-level linting with hovers and shit
+** DONE doom-emacs-level linting with hovers and shit
+- State "DONE"       from "TODO"       [2020-01-20 Mo 22:44]
 - State "TODO"       from              [2020-01-20 Mo 20:56]
-** TODO Same kind of overview, when switching buffers
+** TODO Same kind of overview, when switching buffers as in org-mode
 - State "TODO"       from              [2020-01-20 Mo 20:57]
