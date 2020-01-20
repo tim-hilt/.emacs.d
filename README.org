@@ -613,7 +613,10 @@ Magit is a wrapper and an interface around git that makes version control in Ema
       nil nil '(center repeated))
     (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
       nil nil 'bottom)
-    (git-gutter-mode))
+    (git-gutter-mode)
+    :config
+    (advice-add #'magit-stage-file   :after #'+vc-gutter-update-h)
+    (advice-add #'magit-unstage-file :after #'+vc-gutter-update-h))
 #+END_SRC
 
 * Wish-list
