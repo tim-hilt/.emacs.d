@@ -1,4 +1,3 @@
-
 #+TITLE: Emacs Configuration File
 #+AUTHOR: Tim Hilt
 #+DATE: 11.10.2019
@@ -54,6 +53,10 @@ it was implemented.
   - [[#latex-autocompletion][LaTeX autocompletion]]
   - [[#split-org-mode-code-block-to-the-right][Split org-mode code-block to the right]]
   - [[#c-x-c-b-to-read-whole-list-of-buffers][C-x C-b to read whole list of buffers]]
+  - [[#git-changes-in-left-margin][Git changes in left margin]]
+  - [[#disable-gc-at-startup][disable gc at startup]]
+  - [[#doom-emacs-level-linting-with-hovers-and-shit][doom-emacs-level linting with hovers and shit]]
+  - [[#same-kind-of-overview-when-switching-buffers][Same kind of overview, when switching buffers]]
 
 * Bootstrap
 
@@ -182,18 +185,18 @@ it was implemented.
         "alacritty -e ipython -i "
         (buffer-file-name) "&"))))
 
-  (require 'markdown-mode)
-  (define-key markdown-mode-map
-    (kbd "C-c C-a")
-    (lambda ()
-      (interactive)
-      (shell-command
-       (concat
-        "pandoc "
-        (file-name-sans-extension (buffer-file-name))
-        ".md -o "
-        (file-name-sans-extension (buffer-file-name))
-        ".pdf"))))
+  ;; (require 'markdown-mode)
+  ;; (define-key markdown-mode-map
+  ;;   (kbd "C-c C-a")
+  ;;   (lambda ()
+  ;;     (interactive)
+  ;;     (shell-command
+  ;;      (concat
+  ;;       "pandoc "
+  ;;       (file-name-sans-extension (buffer-file-name))
+  ;;       ".md -o "
+  ;;       (file-name-sans-extension (buffer-file-name))
+  ;;       ".pdf"))))
 #+END_SRC
 
 ** Faces
@@ -276,7 +279,7 @@ The Doom-Themes are kind of the state of the art in stylish and modern Emacs-The
     :config
     ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
     ;; may have their own settings.
-    (load-theme 'doom-molokai t)
+    (load-theme 'doom-one t)
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
@@ -642,3 +645,11 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from              [2019-11-29 Fri 22:42]
 ** TODO C-x C-b to read whole list of buffers
 - State "TODO"       from              [2019-11-29 Fri 22:43]
+** TODO Git changes in left margin
+- State "TODO"       from "TODO"       [2020-01-20 Mo 20:55]
+** TODO disable gc at startup
+- State "TODO"       from              [2020-01-20 Mo 20:56]
+** TODO doom-emacs-level linting with hovers and shit
+- State "TODO"       from              [2020-01-20 Mo 20:56]
+** TODO Same kind of overview, when switching buffers
+- State "TODO"       from              [2020-01-20 Mo 20:57]
