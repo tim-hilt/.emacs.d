@@ -603,8 +603,7 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter-fringe
-    :init (git-gutter-mode)
-    ;; subtle diff indicators in the fringe
+    :init
     ;; places the git gutter outside the margins.
     (setq-default fringes-outside-margins t)
     ;; thin fringe bitmaps
@@ -613,7 +612,8 @@ Magit is a wrapper and an interface around git that makes version control in Ema
     (define-fringe-bitmap 'git-gutter-fr:modified [224]
       nil nil '(center repeated))
     (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
-      nil nil 'bottom))
+      nil nil 'bottom)
+    (git-gutter-mode))
 #+END_SRC
 
 * Wish-list
