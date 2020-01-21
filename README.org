@@ -35,28 +35,15 @@ it was implemented.
   - [[#languages][Languages]]
   - [[#version-control][Version Control]]
 - [[#wish-list][Wish-list]]
-  - [[#cancelled-close-magit-buffer-with-c-x-k][CANCELLED Close Magit Buffer with C-x k]]
-  - [[#sudo-edit][sudo-edit]]
-  - [[#m-t-for-alacritty][M-t for alacritty&]]
-  - [[#dont-respect--and--in-counsel][don't respect . and .. in counsel]]
-  - [[#cancelled-resize-font-with-c--c--][CANCELLED Resize Font with C-+ C--]]
-  - [[#visual-regexp--steroids][visual-regexp/ -steroids]]
-  - [[#expand-region][Expand-region]]
-  - [[#multiple-cursors][Multiple cursors]]
-  - [[#run-python-with-c-c-c-a][Run python with C-c C-a]]
   - [[#cursor-jumps-around-when-writing-use-package][Cursor jumps around when writing "use-package"]]
-  - [[#save-and-reload-config-file-with-c-c-r][Save and reload config-file with C-c r]]
   - [[#correct-highlight-color-in-ivy][Correct highlight-color in ivy]]
   - [[#digestif-errors-when-c-w-or-c-k][Digestif errors when C-w or C-k]]
   - [[#double-pressing--or-_-in-auctex-inserts-_-or--respectively][Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively]]
   - [[#configure-visual-regexp-steroids-correctly][Configure visual regexp steroids correctly]]
   - [[#better-elisp-autocompletion][Better elisp-autocompletion]]
   - [[#latex-autocompletion][LaTeX autocompletion]]
-  - [[#open-org-mode-code-block-in-fullscreen-also-magit][Open org-mode-code-block in fullscreen; also Magit]]
   - [[#c-x-c-b-to-read-whole-list-of-buffers][C-x C-b to read whole list of buffers]]
-  - [[#git-changes-in-left-margin][Git changes in left margin]]
   - [[#disable-gc-at-startup][disable gc at startup]]
-  - [[#doom-emacs-level-linting-with-hovers-and-shit][doom-emacs-level linting with hovers and shit]]
   - [[#same-kind-of-overview-when-switching-buffers-as-in-org-mode][Same kind of overview, when switching buffers as in org-mode]]
 
 * Bootstrap
@@ -624,46 +611,8 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 #+END_SRC
 
 * Wish-list
-:PROPERTIES:
-:LOGGING:  TODO(!) DONE(!) CANCELLED(c@)
-:END:
-
-** CANCELLED Close Magit Buffer with C-x k
-- State "CANCELLED"  from "DONE"       [2019-10-18 Fri 23:01] \\
-  You can also just type "q" to call ~magit-bury-buffer~ and the buffer will be hidden. Should this come up again, one can look at [[http://manuel-uberti.github.io/emacs/2018/02/17/magit-bury-buffer/][Manuel Uebertis Blog-post]] concerning the theme.
-- State "TODO"       from              [2019-10-18 Fri 23:01]
-** DONE sudo-edit
-- State "DONE"       from "TODO"       [2019-10-18 Fri 23:20]
-- State "TODO"       from              [2019-10-18 Fri 22:49]
-** DONE M-t for alacritty&
-- State "DONE"       from "TODO"       [2019-10-18 Fri 22:49]
-- State "TODO"       from              [2019-10-18 Fri 22:49]
-** DONE don't respect . and .. in counsel
-- State "DONE"       from "TODO"       [2019-10-18 Fri 22:57]
-- State "TODO"       from              [2019-10-18 Fri 22:54]
-** CANCELLED Resize Font with C-+ C--
-- State "CANCELLED"  from "TODO"       [2019-10-18 Fri 23:55] \\
-  Possible with ~C-x C-+~, ~C-x C--~ and resetting with ~C-x C-0~
-- State "TODO"       from              [2019-10-18 Fri 22:49]
-** DONE visual-regexp/ -steroids
-- State "DONE"       from "TODO"       [2019-10-19 Sat 00:04]
-- State "TODO"       from              [2019-10-18 Fri 23:11]
-** DONE Expand-region
-- State "DONE"       from "TODO"       [2019-10-19 Sat 00:09]
-- State "TODO"       from              [2019-10-18 Fri 22:49]
-** DONE Multiple cursors
-- State "DONE"       from "TODO"       [2019-10-19 Sat 00:21]
-- State "TODO"       from              [2019-10-18 Fri 23:34]
-
-** DONE Run python with C-c C-a
-- State "DONE"       from "TODO"       [2019-10-29 Tue 17:23]
-- State "TODO"       from "TODO"       [2019-10-29 Tue 17:22]
-- State "TODO"       from              [2019-10-26 Sat 08:19]
 ** TODO Cursor jumps around when writing "use-package"
 - State "TODO"       from              [2019-10-26 Sat 08:19]
-** DONE Save and reload config-file with C-c r
-- State "DONE"       from "TODO"       [2019-10-29 Tue 17:04]
-- State "TODO"       from              [2019-10-26 Sat 08:20]
 ** TODO Correct highlight-color in ivy
 - State "TODO"       from              [2019-10-26 Sat 10:54]
 ** TODO Digestif errors when C-w or C-k
@@ -676,18 +625,9 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from              [2019-11-29 Fri 22:38]
 ** TODO LaTeX autocompletion
 - State "TODO"       from              [2019-11-29 Fri 22:39]
-** DONE Open org-mode-code-block in fullscreen; also Magit
-- State "DONE"       from "TODO"       [2020-01-20 Mo 22:10]
-- State "TODO"       from              [2019-11-29 Fri 22:42]
 ** TODO C-x C-b to read whole list of buffers
 - State "TODO"       from              [2019-11-29 Fri 22:43]
-** DONE Git changes in left margin
-- State "DONE"       from "TODO"       [2020-01-20 Mo 21:23]
-- State "TODO"       from "TODO"       [2020-01-20 Mo 20:55]
 ** TODO disable gc at startup
-- State "TODO"       from              [2020-01-20 Mo 20:56]
-** DONE doom-emacs-level linting with hovers and shit
-- State "DONE"       from "TODO"       [2020-01-20 Mo 22:44]
 - State "TODO"       from              [2020-01-20 Mo 20:56]
 ** TODO Same kind of overview, when switching buffers as in org-mode
 - State "TODO"       from              [2020-01-20 Mo 20:57]
