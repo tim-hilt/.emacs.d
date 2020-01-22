@@ -45,6 +45,9 @@ it was implemented.
   - [[#c-x-c-b-to-read-whole-list-of-buffers][C-x C-b to read whole list of buffers]]
   - [[#disable-gc-at-startup][disable gc at startup]]
   - [[#same-kind-of-overview-when-switching-buffers-as-in-doom-emacs][Same kind of overview, when switching buffers as in doom-emacs]]
+  - [[#find-out-why-maximized-emacs-doesnt-fill-the-whole-screen-everytime][Find out, why maximized Emacs doesn't fill the whole screen everytime]]
+  - [[#add-highlight-todo][Add Highlight-TODO]]
+  - [[#clean-up-dashboard][Clean up Dashboard]]
 
 * Bootstrap
 
@@ -379,7 +382,8 @@ The following packages are a plug-in-replacement for standard Emacs-Functions, t
 **** Ivy-Prescient
 
 #+BEGIN_SRC emacs-lisp
-  (use-package prescient)
+  (use-package prescient
+    :config (prescient-persist-mode))
 
   (use-package ivy-prescient
     :after (counsel)
@@ -641,3 +645,6 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from              [2020-01-20 Mo 20:56]
 ** TODO Same kind of overview, when switching buffers as in doom-emacs
 - State "TODO"       from              [2020-01-20 Mo 20:57]
+** TODO Find out, why maximized Emacs doesn't fill the whole screen everytime
+** TODO Add Highlight-TODO
+** TODO Clean up Dashboard
