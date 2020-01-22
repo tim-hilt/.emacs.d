@@ -1,4 +1,4 @@
-#+TITLE: Emacs Configuration File
+#+Title: Emacs Configuration File
 #+AUTHOR: Tim Hilt
 #+DATE: 11.10.2019
 #+STARTUP: content
@@ -44,7 +44,7 @@ it was implemented.
   - [[#latex-autocompletion][LaTeX autocompletion]]
   - [[#c-x-c-b-to-read-whole-list-of-buffers][C-x C-b to read whole list of buffers]]
   - [[#disable-gc-at-startup][disable gc at startup]]
-  - [[#same-kind-of-overview-when-switching-buffers-as-in-org-mode][Same kind of overview, when switching buffers as in org-mode]]
+  - [[#same-kind-of-overview-when-switching-buffers-as-in-doom-emacs][Same kind of overview, when switching buffers as in doom-emacs]]
 
 * Bootstrap
 
@@ -335,7 +335,7 @@ A welcome screen that shows startup-info and other stuff
   (use-package dashboard
     :init
     (setq dashboard-banner-logo-title "Hello Master. I'm here to serve you.")
-    (setq dashboard-startup-banner "~/.emacs.d/emacslogo.png")
+    (setq dashboard-startup-banner "~/emacslogo.png")
     (setq dashboard-center-content t)
     (setq dashboard-show-shortcuts t)
     (setq dashboard-set-heading-icons t)
@@ -374,6 +374,16 @@ The following packages are a plug-in-replacement for standard Emacs-Functions, t
     :bind
     ("M-x" . counsel-M-x)
     ("C-x C-f" . counsel-find-file))
+#+END_SRC
+
+**** Ivy-Prescient
+
+#+BEGIN_SRC emacs-lisp
+  (use-package prescient)
+
+  (use-package ivy-prescient
+    :after (counsel)
+    :config (ivy-prescient-mode))
 #+END_SRC
 
 *** Rainbow-delimiters
@@ -629,5 +639,5 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from              [2019-11-29 Fri 22:43]
 ** TODO disable gc at startup
 - State "TODO"       from              [2020-01-20 Mo 20:56]
-** TODO Same kind of overview, when switching buffers as in org-mode
+** TODO Same kind of overview, when switching buffers as in doom-emacs
 - State "TODO"       from              [2020-01-20 Mo 20:57]
