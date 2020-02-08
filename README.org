@@ -48,6 +48,7 @@ it was implemented.
   - [[#find-out-why-maximized-emacs-doesnt-fill-the-whole-screen-everytime][Find out, why maximized Emacs doesn't fill the whole screen everytime]]
   - [[#add-highlight-todo][Add Highlight-TODO]]
   - [[#clean-up-dashboard][Clean up Dashboard]]
+  - [[#find-out-why-one-has-to-reload-the-config-multiple-times-for-all-the-settings-to-take-effect][Find out, why one has to reload the config multiple times for all the settings to take effect]]
 
 * Bootstrap
 
@@ -191,6 +192,13 @@ it was implemented.
   ;;       ".md -o "
   ;;       (file-name-sans-extension (buffer-file-name))
   ;;       ".pdf"))))
+
+  (defun end-of-line-and-indented-new-line ()
+    (interactive)
+    (end-of-line)
+    (newline-and-indent))
+
+  (global-set-key (kbd "<S-return>") 'end-of-line-and-indented-new-line)
 #+END_SRC
 
 ** Faces
@@ -386,6 +394,7 @@ The following packages are a plug-in-replacement for standard Emacs-Functions, t
     :config (prescient-persist-mode))
 
   (use-package ivy-prescient
+    :init (setq ivy-prescient-retain-classic-highlighting 1)
     :after (counsel)
     :config (ivy-prescient-mode))
 #+END_SRC
@@ -648,3 +657,4 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 ** TODO Find out, why maximized Emacs doesn't fill the whole screen everytime
 ** TODO Add Highlight-TODO
 ** TODO Clean up Dashboard
+** TODO Find out, why one has to reload the config multiple times for all the settings to take effect
