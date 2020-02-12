@@ -47,7 +47,7 @@ it was implemented.
   - [[#same-kind-of-overview-when-switching-buffers-as-in-doom-emacs][Same kind of overview, when switching buffers as in doom-emacs]]
   - [[#find-out-why-maximized-emacs-doesnt-fill-the-whole-screen-everytime][Find out, why maximized Emacs doesn't fill the whole screen everytime]]
   - [[#add-highlight-todo][Add Highlight-TODO]]
-  - [[#clean-up-dashboard][Clean up Dashboard]]
+  - [[#cancelled-clean-up-dashboard][CANCELLED Clean up Dashboard]]
   - [[#find-out-why-one-has-to-reload-the-config-multiple-times-for-all-the-settings-to-take-effect][Find out, why one has to reload the config multiple times for all the settings to take effect]]
 
 * Bootstrap
@@ -337,25 +337,6 @@ Better Modeline that fits well with the theme
   (use-package doom-modeline
     :hook (after-init . doom-modeline-mode))
 #+END_SRC
-
-**** dashboard
-
-A welcome screen that shows startup-info and other stuff
-
-#+BEGIN_SRC emacs-lisp
-  (use-package dashboard
-    :init
-    (setq dashboard-banner-logo-title "Hello Master. I'm here to serve you.")
-    (setq dashboard-startup-banner "~/emacslogo.png")
-    (setq dashboard-center-content t)
-    (setq dashboard-show-shortcuts t)
-    (setq dashboard-set-heading-icons t)
-    (setq dashboard-set-file-icons t)
-    (setq dashboard-set-init-info t)
-    :config
-    (dashboard-setup-startup-hook))
-#+END_SRC
-
 ** Editor enhancements
 
 *** Ivy
@@ -476,6 +457,20 @@ Pretty much selve explanatory; adds additional cursors to words/lines
     (global-disable-mouse-mode))
 #+END_SRC
 
+*** hl-todo
+
+#+BEGIN_SRC emacs-lisp
+  (use-package hl-todo
+    :config (global-hl-todo-mode)
+    :init
+    (setq hl-todo-keyword-faces
+          '(("TODO"   . "#FF0000")
+            ("FIXME"  . "#FF0000")
+            ("DEBUG"  . "#A020F0")
+            ("GOTCHA" . "#FF4500")
+            ("STUB"   . "#1E90FF"))))
+#+END_SRC
+
 ** Snippets and Autocomplete
 
 *** Yasnippet
@@ -515,6 +510,9 @@ Company-Mode is a Completion-Frontend
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
     :config (global-flycheck-mode +1))
+
+  (with-eval-after-load 'flycheck
+    (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 
   (use-package flycheck-popup-tip
     :config
@@ -656,5 +654,7 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from              [2020-01-20 Mo 20:57]
 ** TODO Find out, why maximized Emacs doesn't fill the whole screen everytime
 ** TODO Add Highlight-TODO
-** TODO Clean up Dashboard
+** CANCELLED Clean up Dashboard
+- State "CANCELLED"  from "TODO"       [2020-02-12 Mi 08:56] \\
+  Deleted Dashboard altogether
 ** TODO Find out, why one has to reload the config multiple times for all the settings to take effect
