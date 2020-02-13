@@ -35,7 +35,7 @@ it was implemented.
   - [[#languages][Languages]]
   - [[#version-control][Version Control]]
 - [[#wish-list][Wish-list]]
-  - [[#cursor-jumps-around-when-writing-use-package][Cursor jumps around when writing "use-package"]]
+  - [[#cancelled-cursor-jumps-around-when-writing-use-package][CANCELLED Cursor jumps around when writing "use-package"]]
   - [[#correct-highlight-color-in-ivy][Correct highlight-color in ivy]]
   - [[#digestif-errors-when-c-w-or-c-k][Digestif errors when C-w or C-k]]
   - [[#double-pressing--or-_-in-auctex-inserts-_-or--respectively][Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively]]
@@ -412,12 +412,13 @@ Helps the user to replace a pattern of text and visualizes the input-pattern. ~v
 
 #+BEGIN_SRC emacs-lisp
   (use-package visual-regexp
-    :bind
-    ("C-x C-r" . 'vr/query-replace))
+    :bind ("C-x C-r" . 'vr/query-replace)
+    ("C-x r" . 'vr/replace))
+
+  (use-package pcre2el)
 
   (use-package visual-regexp-steroids
-    :init
-    (setq vr/engine 'pcre2el))
+    :init (setq vr/engine 'pcre2el))
 #+END_SRC
 
 *** Expand-region
@@ -464,8 +465,8 @@ Pretty much selve explanatory; adds additional cursors to words/lines
     :config (global-hl-todo-mode)
     :init
     (setq hl-todo-keyword-faces
-          '(("TODO"   . "#FF0000")
-            ("FIXME"  . "#FF0000")
+          '(("TODO"   . "#3e9dd5")
+            ("FIXME"  . "#3e9dd5")
             ("DEBUG"  . "#A020F0")
             ("GOTCHA" . "#FF4500")
             ("STUB"   . "#1E90FF"))))
@@ -632,7 +633,9 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 #+END_SRC
 
 * Wish-list
-** TODO Cursor jumps around when writing "use-package"
+** CANCELLED Cursor jumps around when writing "use-package"
+- State "CANCELLED"  from "TODO"       [2020-02-13 Do 20:44] \\
+  Not noticed for a while... Maybe a bug got resolved
 - State "TODO"       from              [2019-10-26 Sat 08:19]
 ** TODO Correct highlight-color in ivy
 - State "TODO"       from              [2019-10-26 Sat 10:54]
@@ -640,7 +643,7 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from              [2019-10-26 Sat 12:16]
 ** TODO Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively
 - State "TODO"       from              [2019-10-30 Wed 07:56]
-** TODO Configure visual regexp steroids correctly
+** DONE Configure visual regexp steroids correctly
 - State "TODO"       from              [2019-11-11 Mon 07:48]
 ** TODO Better elisp-autocompletion
 - State "TODO"       from              [2019-11-29 Fri 22:38]
@@ -653,7 +656,7 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 ** TODO Same kind of overview, when switching buffers as in doom-emacs
 - State "TODO"       from              [2020-01-20 Mo 20:57]
 ** TODO Find out, why maximized Emacs doesn't fill the whole screen everytime
-** TODO Add Highlight-TODO
+** DONE Add Highlight-TODO
 ** CANCELLED Clean up Dashboard
 - State "CANCELLED"  from "TODO"       [2020-02-12 Mi 08:56] \\
   Deleted Dashboard altogether
