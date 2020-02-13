@@ -365,7 +365,8 @@ The following packages are a plug-in-replacement for standard Emacs-Functions, t
     (setq counsel-find-file-ignore-regexp "\\(?:\\`[.]\\)")
     :bind
     ("M-x" . counsel-M-x)
-    ("C-x C-f" . counsel-find-file))
+    ("C-x C-f" . counsel-find-file)
+    ("C-x r" . counsel-recentf))
 #+END_SRC
 
 **** Ivy-Prescient
@@ -378,6 +379,15 @@ The following packages are a plug-in-replacement for standard Emacs-Functions, t
     :init (setq ivy-prescient-retain-classic-highlighting 1)
     :after (counsel)
     :config (ivy-prescient-mode))
+#+END_SRC
+
+**** Ivy-rich
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-rich
+    :config (ivy-rich-mode 1))
+
+  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
 #+END_SRC
 
 *** Rainbow-delimiters
@@ -412,8 +422,8 @@ Helps the user to replace a pattern of text and visualizes the input-pattern. ~v
 
 #+BEGIN_SRC emacs-lisp
   (use-package visual-regexp
-    :bind ("C-x C-r" . 'vr/query-replace)
-    ("C-x r" . 'vr/replace))
+    :bind 
+    ("C-x C-r" . 'vr/query-replace))
 
   (use-package pcre2el)
 
@@ -653,7 +663,7 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from              [2019-11-29 Fri 22:43]
 ** TODO disable gc at startup
 - State "TODO"       from              [2020-01-20 Mo 20:56]
-** TODO Same kind of overview, when switching buffers as in doom-emacs
+** DONE Same kind of overview, when switching buffers as in doom-emacs
 - State "TODO"       from              [2020-01-20 Mo 20:57]
 ** TODO Find out, why maximized Emacs doesn't fill the whole screen everytime
 ** DONE Add Highlight-TODO
