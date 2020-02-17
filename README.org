@@ -16,6 +16,8 @@ The last section contains a /TODO/-list with features that i wish to implement, 
 well as a time stamp that contains when the feature was added to the list and when 
 it was implemented.
 
+Some dummy content.
+
 * Table of contents                                                 :TOC:
 - [[#intro][Intro]]
 - [[#bootstrap][Bootstrap]]
