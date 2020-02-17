@@ -35,19 +35,14 @@ it was implemented.
   - [[#languages][Languages]]
   - [[#version-control][Version Control]]
 - [[#wish-list][Wish-list]]
-  - [[#cancelled-cursor-jumps-around-when-writing-use-package][CANCELLED Cursor jumps around when writing "use-package"]]
   - [[#correct-highlight-color-in-ivy][Correct highlight-color in ivy]]
   - [[#digestif-errors-when-c-w-or-c-k][Digestif errors when C-w or C-k]]
   - [[#double-pressing--or-_-in-auctex-inserts-_-or--respectively][Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively]]
-  - [[#configure-visual-regexp-steroids-correctly][Configure visual regexp steroids correctly]]
   - [[#better-elisp-autocompletion][Better elisp-autocompletion]]
   - [[#latex-autocompletion][LaTeX autocompletion]]
   - [[#c-x-c-b-to-read-whole-list-of-buffers][C-x C-b to read whole list of buffers]]
   - [[#disable-gc-at-startup][disable gc at startup]]
-  - [[#same-kind-of-overview-when-switching-buffers-as-in-doom-emacs][Same kind of overview, when switching buffers as in doom-emacs]]
   - [[#find-out-why-maximized-emacs-doesnt-fill-the-whole-screen-everytime][Find out, why maximized Emacs doesn't fill the whole screen everytime]]
-  - [[#add-highlight-todo][Add Highlight-TODO]]
-  - [[#cancelled-clean-up-dashboard][CANCELLED Clean up Dashboard]]
   - [[#find-out-why-one-has-to-reload-the-config-multiple-times-for-all-the-settings-to-take-effect][Find out, why one has to reload the config multiple times for all the settings to take effect]]
 
 * Bootstrap
@@ -62,8 +57,7 @@ it was implemented.
     (menu-bar-mode 0)                               ; Disable the menu bar
     (tooltip-mode 0))                               ; Disable the tooltips
 
-  (when (version<= "26.0.50" emacs-version )        ; Enable line numbers
-    (display-line-numbers-mode))
+  (global-display-line-numbers-mode)                ; Enable line numbers
 
   (setq-default
    auto-window-vscroll nil                          ; Lighten vertical scroll
@@ -86,6 +80,9 @@ it was implemented.
    window-combination-resize t                      ; Resize windows proportionally
    ring-bell-function 'ignore                       ; Disable annoying bell sound
    x-stretch-cursor t)                              ; Stretch cursor to the glyph width
+
+   (setq split-height-threshold nil
+         split-width-threshold 0)
 
   (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
   (global-subword-mode 1)                           ; Iterate through CamelCase words
@@ -567,21 +564,28 @@ LSP-Backend for Company-Mode
 *** LaTeX
 
 #+BEGIN_SRC emacs-lisp
+  (use-package pdf-tools
+    :init (pdf-loader-install)
+    (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1))))
+
   (use-package tex
     :ensure auctex
     :defer t
     :init
-    (setq TeX-electric-math (cons "\\(" "\\)"))
-    (setq LaTeX-electric-left-right-brace t)
-    (setq TeX-source-correlate-method 'synctex)
-    (setq TeX-source-correlate-start-server t)
-    (setq TeX-save-query nil)
-    (setq-default TeX-engine 'xetex)
+    (setq TeX-electric-math (cons "\\(" "\\)")
+          LaTeX-electric-left-right-brace t
+          TeX-source-correlate-method 'synctex
+          TeX-source-correlate-start-server t
+          TeX-save-query nil)
+    (setq-default TeX-engine 'luatex)
     (setq-default TeX-PDF-mode t)
     :config
-    (TeX-source-correlate-mode)
-    (add-to-list 'TeX-view-program-selection
-                 '(output-pdf "Zathura")))
+    ;; (add-to-list 'TeX-view-program-selection
+    ;;              '(output-pdf "Zathura"))
+    (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
+    :hook (LaTeX-mode . TeX-source-correlate-mode))
+
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
 #+END_SRC
 
 *** Julia
@@ -643,18 +647,13 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 #+END_SRC
 
 * Wish-list
-** CANCELLED Cursor jumps around when writing "use-package"
-- State "CANCELLED"  from "TODO"       [2020-02-13 Do 20:44] \\
-  Not noticed for a while... Maybe a bug got resolved
-- State "TODO"       from              [2019-10-26 Sat 08:19]
+
 ** TODO Correct highlight-color in ivy
 - State "TODO"       from              [2019-10-26 Sat 10:54]
 ** TODO Digestif errors when C-w or C-k
 - State "TODO"       from              [2019-10-26 Sat 12:16]
 ** TODO Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively
 - State "TODO"       from              [2019-10-30 Wed 07:56]
-** DONE Configure visual regexp steroids correctly
-- State "TODO"       from              [2019-11-11 Mon 07:48]
 ** TODO Better elisp-autocompletion
 - State "TODO"       from              [2019-11-29 Fri 22:38]
 ** TODO LaTeX autocompletion
@@ -663,11 +662,5 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 - State "TODO"       from              [2019-11-29 Fri 22:43]
 ** TODO disable gc at startup
 - State "TODO"       from              [2020-01-20 Mo 20:56]
-** DONE Same kind of overview, when switching buffers as in doom-emacs
-- State "TODO"       from              [2020-01-20 Mo 20:57]
 ** TODO Find out, why maximized Emacs doesn't fill the whole screen everytime
-** DONE Add Highlight-TODO
-** CANCELLED Clean up Dashboard
-- State "CANCELLED"  from "TODO"       [2020-02-12 Mi 08:56] \\
-  Deleted Dashboard altogether
 ** TODO Find out, why one has to reload the config multiple times for all the settings to take effect
