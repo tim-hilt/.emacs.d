@@ -36,14 +36,9 @@ it was implemented.
   - [[#version-control][Version Control]]
 - [[#wish-list][Wish-list]]
   - [[#correct-highlight-color-in-ivy][Correct highlight-color in ivy]]
-  - [[#digestif-errors-when-c-w-or-c-k][Digestif errors when C-w or C-k]]
   - [[#double-pressing--or-_-in-auctex-inserts-_-or--respectively][Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively]]
-  - [[#better-elisp-autocompletion][Better elisp-autocompletion]]
-  - [[#latex-autocompletion][LaTeX autocompletion]]
   - [[#c-x-c-b-to-read-whole-list-of-buffers][C-x C-b to read whole list of buffers]]
   - [[#disable-gc-at-startup][disable gc at startup]]
-  - [[#find-out-why-maximized-emacs-doesnt-fill-the-whole-screen-everytime][Find out, why maximized Emacs doesn't fill the whole screen everytime]]
-  - [[#find-out-why-one-has-to-reload-the-config-multiple-times-for-all-the-settings-to-take-effect][Find out, why one has to reload the config multiple times for all the settings to take effect]]
 
 * Bootstrap
 
@@ -57,7 +52,7 @@ it was implemented.
     (menu-bar-mode 0)                               ; Disable the menu bar
     (tooltip-mode 0))                               ; Disable the tooltips
 
-  (global-display-line-numbers-mode)                ; Enable line numbers
+  (global-display-line-numbers-mode)             ; Enable line numbers
 
   (setq-default
    auto-window-vscroll nil                          ; Lighten vertical scroll
@@ -80,9 +75,10 @@ it was implemented.
    window-combination-resize t                      ; Resize windows proportionally
    ring-bell-function 'ignore                       ; Disable annoying bell sound
    x-stretch-cursor t)                              ; Stretch cursor to the glyph width
+   ;; mode-line-format nil)
 
    (setq split-height-threshold 120
-         split-width-threshold 120)
+         split-width-threshold 160)
 
   (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
   (global-subword-mode 1)                           ; Iterate through CamelCase words
@@ -135,6 +131,12 @@ it was implemented.
       ".md -o "
       (file-name-sans-extension (buffer-file-name))
       ".pdf")))
+
+  (defun run-terminal-here ()
+    (interactive)
+    (shell-command (concat "alacritty --working-directory "
+                           (file-name-directory (or load-file-name buffer-file-name))
+                           " > /dev/null 2>&1 & disown") nil nil))
 #+END_SRC
 
 ** Modify Keybindings
@@ -196,6 +198,8 @@ it was implemented.
     (newline-and-indent))
 
   (global-set-key (kbd "<S-return>") 'end-of-line-and-indented-new-line)
+
+  (global-set-key (kbd "C-x C-t") 'run-terminal-here)
 #+END_SRC
 
 ** Faces
@@ -334,6 +338,10 @@ Better Modeline that fits well with the theme
 
 #+BEGIN_SRC emacs-lisp
   (use-package doom-modeline
+    ;; :init
+    ;; (setq
+     ;; doom-modeline-major-mode-icon nil
+     ;; doom-modeline-major-mode-color-icon nil)
     :hook (after-init . doom-modeline-mode))
 #+END_SRC
 ** Editor enhancements
@@ -452,8 +460,7 @@ Pretty much selve explanatory; adds additional cursors to words/lines
 
 #+BEGIN_SRC emacs-lisp
   (use-package multiple-cursors
-    :bind
-    ("M-SPC" . mc/mark-next-like-this))
+    :bind ("M-SPC" . 'mc/mark-next-like-this))
 #+END_SRC
 
 *** which-key
@@ -522,6 +529,7 @@ Company-Mode is a Completion-Frontend
           ("C-p" . 'company-select-previous))
     :hook
     (prog-mode . company-mode)
+    (LaTeX-mode . company-mode)
     :custom
     (company-minimum-prefix-length 1)
     (company-tooltip-align-annotations t))
@@ -577,6 +585,8 @@ LSP-Backend for Company-Mode
 
 *** LaTeX
 
+**** AucTeX
+
 #+BEGIN_SRC emacs-lisp
   (use-package pdf-tools
     :init (pdf-loader-install)
@@ -600,9 +610,20 @@ LSP-Backend for Company-Mode
     ;; (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
     :hook
     (LaTeX-mode . TeX-source-correlate-mode)
-    (LaTeX-mode . auto-fill-mode))
+    (LaTeX-mode . auto-fill-mode)
+    (LaTeX-mode . yas-minor-mode))
 
-  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+  (add-hook 'TeX-after-compilation-finished-functions
+            #'TeX-revert-document-buffer)
+#+END_SRC
+
+**** Company-AucTeX
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-auctex
+    :init
+    (add-to-list 'company-backends 'company-auctex)
+    (company-auctex-init))
 #+END_SRC
 
 *** Julia
@@ -667,17 +688,9 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 
 ** TODO Correct highlight-color in ivy
 - State "TODO"       from              [2019-10-26 Sat 10:54]
-** TODO Digestif errors when C-w or C-k
-- State "TODO"       from              [2019-10-26 Sat 12:16]
 ** TODO Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively
 - State "TODO"       from              [2019-10-30 Wed 07:56]
-** TODO Better elisp-autocompletion
-- State "TODO"       from              [2019-11-29 Fri 22:38]
-** TODO LaTeX autocompletion
-- State "TODO"       from              [2019-11-29 Fri 22:39]
 ** TODO C-x C-b to read whole list of buffers
 - State "TODO"       from              [2019-11-29 Fri 22:43]
 ** TODO disable gc at startup
 - State "TODO"       from              [2020-01-20 Mo 20:56]
-** TODO Find out, why maximized Emacs doesn't fill the whole screen everytime
-** TODO Find out, why one has to reload the config multiple times for all the settings to take effect
