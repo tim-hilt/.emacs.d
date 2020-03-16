@@ -93,6 +93,13 @@ it was implemented.
   (global-hl-line-mode 1)                           ; Highlight the current line
   ;; (global-visual-line-mode t)                       ; Wrap lines in every case, also when using org-mode. Messes up tables though.
 
+  ;; Recentf:
+  (recentf-mode 1)
+  (setq recentf-max-menu-items 50)        ; Enlarge number of recent files
+  (setq recentf-max-saved-items 50)
+
+  (run-at-time nil (* 5 60) 'recentf-save-list) ; Save recent files periodically instead of on exit
+
   ;; Changes C-w and M-w to Kill/Copy whole line, if no region is active
   (defadvice kill-region (before slick-cut activate compile)
     "When called interactively with no active region, kill a single line instead."
@@ -509,7 +516,8 @@ Yasnippet is a package, that let's you insert larger Code-Snippets by typing a p
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
     :hook
-    (prog-mode . yas-minor-mode))
+    (prog-mode . yas-minor-mode)
+    (LaTeX-mode . yas-minor-mode))
 
   (use-package yasnippet-snippets)
 #+END_SRC
@@ -600,7 +608,8 @@ LSP-Backend for Company-Mode
           LaTeX-electric-left-right-brace t
           TeX-source-correlate-method 'synctex
           TeX-source-correlate-start-server t
-          TeX-save-query nil)
+          TeX-save-query nil
+          ConTeXt-Mark-version "IV")
     (setq-default TeX-engine 'luatex)
     (setq-default TeX-PDF-mode t)
     :config
@@ -615,6 +624,10 @@ LSP-Backend for Company-Mode
 
   (add-hook 'TeX-after-compilation-finished-functions
             #'TeX-revert-document-buffer)
+
+  (add-to-list 'auto-mode-alist '("\\.mkiv\\'" . ConTeXt-mode))
+  (with-eval-after-load "context"
+    (add-to-list 'TeX-file-extensions "mkvi" t))
 #+END_SRC
 
 **** Company-AucTeX
