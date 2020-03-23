@@ -34,6 +34,7 @@ it was implemented.
   - [[#linting][Linting]]
   - [[#languages][Languages]]
   - [[#version-control][Version Control]]
+  - [[#dev-tools][Dev-Tools]]
 - [[#wish-list][Wish-list]]
   - [[#correct-highlight-color-in-ivy][Correct highlight-color in ivy]]
   - [[#double-pressing--or-_-in-auctex-inserts-_-or--respectively][Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively]]
@@ -172,6 +173,8 @@ it was implemented.
                     (other-window 1)))
   (global-set-key (kbd "C-a")
                   'back-to-indentation)
+  (global-set-key (kbd "C-x C-b")
+                  'buffer-menu)
   ;; (global-set-key (kbd "M-RET")
   ;;                 (lambda ()
   ;;                   (interactive)
@@ -564,18 +567,18 @@ Company-Mode is a Completion-Frontend
 LSP is short for "Language-Server-Protocol". It attaches to a running language-server, that is configured outside of Emacs.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-mode
-    :hook 
-    (python-mode . lsp)
-    ;; (LaTeX-mode . lsp)
-    :commands lsp
-    :bind
-    (:map lsp-mode-map
-          (([f12] . 'lsp-find-definition)
-           ("C-<f12>" . 'lsp-find-implementation)
-           ("M-?". 'lsp-describe-thing-at-point)
-           ("M-." . 'lsp-find-references)
-           ("C-c C-r f" . 'lsp-format-buffer))))
+  ;; (use-package lsp-mode
+  ;;   :hook 
+  ;;   (python-mode . lsp)
+  ;;   :commands lsp
+  ;;   :bind
+  ;;   (:map lsp-mode-map
+  ;;         (([f12] . 'lsp-find-definition)
+  ;;          ("C-<f12>" . 'lsp-find-implementation)
+  ;;          ("M-?". 'lsp-describe-thing-at-point)
+  ;;          ("M-." . 'lsp-find-references)
+  ;;          ("C-c C-r f" . 'lsp-format-buffer))))
+
   ;; Doesn't play well unfortunately
   ;; (when (executable-find "ipython")                 ;; Not related to the package, sets python interpreter to ipython
   ;;   (setq python-shell-interpreter "ipython"))
@@ -586,9 +589,9 @@ LSP is short for "Language-Server-Protocol". It attaches to a running language-s
 LSP-Backend for Company-Mode
 
 #+BEGIN_SRC emacs-lisp
-  (use-package company-lsp
-    :config
-    (push 'company-lsp company-backends))
+  ;; (use-package company-lsp
+  ;;   :config
+  ;;   (push 'company-lsp company-backends))
 #+END_SRC
 
 *** LaTeX
@@ -634,7 +637,7 @@ LSP-Backend for Company-Mode
 
 #+BEGIN_SRC emacs-lisp
   (use-package company-auctex
-    :init
+    :config
     (add-to-list 'company-backends 'company-auctex)
     (company-auctex-init))
 #+END_SRC
@@ -650,7 +653,15 @@ LSP-Backend for Company-Mode
 #+BEGIN_SRC emacs-lisp
   ;; (use-package matlab-mode)
 #+END_SRC
-nnn
+
+*** Python
+
+#+BEGIN_SRC emacs-lisp
+  (use-package elpy
+    :init
+    (elpy-enable))
+#+END_SRC
+
 *** Structured Data Modes
 
 #+BEGIN_SRC emacs-lisp
@@ -696,7 +707,13 @@ Magit is a wrapper and an interface around git that makes version control in Ema
     (advice-add #'magit-stage-file   :after #'+vc-gutter-update-h)
     (advice-add #'magit-unstage-file :after #'+vc-gutter-update-h))
 #+END_SRC
+** Dev-Tools
 
+*** Docker
+
+#+BEGIN_SRC emacs-lisp
+  (use-package docker)
+#+END_SRC
 * Wish-list
 
 ** TODO Correct highlight-color in ivy
