@@ -12,7 +12,7 @@
     ("e1ecb0536abec692b5a5e845067d75273fe36f24d01210bf0aa5842f2a7e029f" "285efd6352377e0e3b68c71ab12c43d2b72072f64d436584f9159a58c4ff545a" default)))
  '(package-selected-packages
    (quote
-    (elpy docker company-auctex adaptive-wrap sublimity centered-window ace-jump-mode pdf-tools ivy-rich hl-todo ivy-prescient prescient flycheck-popup-tip git-gutter-fringe fish-mode csv-mode json-mode yaml-mode disable-mouse which-key org-bullets sudo-edit hungry-delete rainbow-delimiters multiple-cursors expand-region visual-regexp-steroids visual-regexp toc-org org-toc-mode matlab-mode julia-mode lsp-ui company-box auctex magit dashboard doom-modeline all-the-icons counsel swiper doom-themes company-lsp lsp-mode company yasnippet-snippets yasnippet use-package)))
+    (arduino-mode elpy docker company-auctex adaptive-wrap sublimity centered-window ace-jump-mode pdf-tools ivy-rich hl-todo ivy-prescient prescient flycheck-popup-tip git-gutter-fringe fish-mode csv-mode json-mode yaml-mode disable-mouse which-key org-bullets sudo-edit hungry-delete rainbow-delimiters multiple-cursors expand-region visual-regexp-steroids visual-regexp toc-org org-toc-mode matlab-mode julia-mode lsp-ui company-box auctex magit dashboard doom-modeline all-the-icons counsel swiper doom-themes company-lsp lsp-mode company yasnippet-snippets yasnippet use-package)))
  '(safe-local-variable-values (quote ((TeX-command-extra-options . "--shell-escape"))))
  '(use-package-always-defer t))
 (custom-set-faces

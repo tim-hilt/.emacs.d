@@ -676,6 +676,12 @@ LSP-Backend for Company-Mode
   (use-package fish-mode)
 #+END_SRC
 
+*** Arduino
+
+#+BEGIN_SRC emacs-lisp
+  (use-package arduino-mode)
+#+END_SRC
+
 ** Version Control
 
 *** Magit
