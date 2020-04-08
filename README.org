@@ -76,10 +76,10 @@ it was implemented.
    window-combination-resize t                      ; Resize windows proportionally
    ring-bell-function 'ignore                       ; Disable annoying bell sound
    x-stretch-cursor t)                              ; Stretch cursor to the glyph width
-   ;; mode-line-format nil)
+  ;; mode-line-format nil)
 
-   (setq split-height-threshold 120
-         split-width-threshold 160)
+  (setq split-height-threshold 120
+        split-width-threshold 160)
 
   (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
   (global-subword-mode 1)                           ; Iterate through CamelCase words
@@ -99,7 +99,10 @@ it was implemented.
   (setq recentf-max-menu-items 50)        ; Enlarge number of recent files
   (setq recentf-max-saved-items 50)
 
-  (run-at-time nil (* 5 60) 'recentf-save-list) ; Save recent files periodically instead of on exit
+  (run-at-time nil (* 5 60)
+               (lambda ()
+                 (let ((save-silently t))
+                   (recentf-save-list))))
 
   ;; Changes C-w and M-w to Kill/Copy whole line, if no region is active
   (defadvice kill-region (before slick-cut activate compile)
@@ -174,7 +177,7 @@ it was implemented.
   (global-set-key (kbd "C-a")
                   'back-to-indentation)
   (global-set-key (kbd "C-x C-b")
-                  'buffer-menu)
+                  'ibuffer)
   ;; (global-set-key (kbd "M-RET")
   ;;                 (lambda ()
   ;;                   (interactive)
@@ -508,6 +511,15 @@ Pretty much selve explanatory; adds additional cursors to words/lines
 #+BEGIN_SRC emacs-lisp
   (use-package ace-jump-mode
     :bind ("M-s" . ace-jump-mode))
+#+END_SRC
+
+*** Ibuffer-VC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package vc)
+
+  (use-package ibuffer-vc
+    :after (ibuffer vc))
 #+END_SRC
 
 ** Snippets and Autocomplete
