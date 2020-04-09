@@ -37,9 +37,7 @@ it was implemented.
   - [[#dev-tools][Dev-Tools]]
 - [[#wish-list][Wish-list]]
   - [[#correct-highlight-color-in-ivy][Correct highlight-color in ivy]]
-  - [[#double-pressing--or-_-in-auctex-inserts-_-or--respectively][Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively]]
-  - [[#c-x-c-b-to-read-whole-list-of-buffers][C-x C-b to read whole list of buffers]]
-  - [[#disable-gc-at-startup][disable gc at startup]]
+  - [[#disable-gc-at-startup-for-faster-startup-time][disable gc at startup for faster startup-time]]
 
 * Bootstrap
 
@@ -638,6 +636,7 @@ LSP-Backend for Company-Mode
     (add-to-list 'TeX-view-program-selection
                  '(output-pdf "Zathura"))
     (setq TeX-view-program-selection '((output-pdf "Zathura")))
+    (setq TeX-electric-sub-and-superscript t)
     ;; (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
     :hook
     (LaTeX-mode . TeX-source-correlate-mode)
@@ -743,9 +742,6 @@ Draw Git-Status in the fringe
 
 ** TODO Correct highlight-color in ivy
 - State "TODO"       from              [2019-10-26 Sat 10:54]
-** TODO Double pressing ~^~ or ~_~ in AucTeX inserts ~_{$}~ or ~^{$}~ respectively
 - State "TODO"       from              [2019-10-30 Wed 07:56]
-** TODO C-x C-b to read whole list of buffers
-- State "TODO"       from              [2019-11-29 Fri 22:43]
-** TODO disable gc at startup
+** TODO disable gc at startup for faster startup-time
 - State "TODO"       from              [2020-01-20 Mo 20:56]
