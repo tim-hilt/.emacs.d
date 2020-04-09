@@ -75,7 +75,8 @@ it was implemented.
    uniquify-buffer-name-style 'forward              ; Uniquify buffer names
    window-combination-resize t                      ; Resize windows proportionally
    ring-bell-function 'ignore                       ; Disable annoying bell sound
-   x-stretch-cursor t)                              ; Stretch cursor to the glyph width
+   x-stretch-cursor t                               ; Stretch cursor to the glyph width
+   fringes-outside-margins t)                       ; places the git gutter outside the margins.
   ;; mode-line-format nil)
 
   (setq split-height-threshold 120
@@ -99,6 +100,7 @@ it was implemented.
   (setq recentf-max-menu-items 50)        ; Enlarge number of recent files
   (setq recentf-max-saved-items 50)
 
+  ;; Don't show message, when saving recentf-list
   (run-at-time nil (* 5 60)
                (lambda ()
                  (let ((save-silently t))
@@ -562,7 +564,12 @@ Company-Mode is a Completion-Frontend
 
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
-    :config (global-flycheck-mode +1))
+    :config
+    (setq flycheck-indication-mode 'right-fringe)
+    ;; A non-descript, left-pointing arrow
+    (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+      [16 48 112 240 112 48 16] nil nil 'center)
+    (global-flycheck-mode +1))
 
   (with-eval-after-load 'flycheck
     (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
@@ -634,7 +641,7 @@ LSP-Backend for Company-Mode
     ;; (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
     :hook
     (LaTeX-mode . TeX-source-correlate-mode)
-    (LaTeX-mode . auto-fill-mode)
+    ;; (LaTeX-mode . auto-fill-mode)
     (LaTeX-mode . yas-minor-mode))
 
   (add-hook 'TeX-after-compilation-finished-functions
@@ -708,11 +715,13 @@ Magit is a wrapper and an interface around git that makes version control in Ema
 
 *** git-gutter-fringe
 
+Draw Git-Status in the fringe
+
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter-fringe
-    :init
-    ;; places the git gutter outside the margins.
-    (setq-default fringes-outside-margins t)
+    :config
+    (advice-add #'magit-stage-file   :after #'+vc-gutter-update-h)
+    (advice-add #'magit-unstage-file :after #'+vc-gutter-update-h)
     ;; thin fringe bitmaps
     (define-fringe-bitmap 'git-gutter-fr:added [224]
       nil nil '(center repeated))
@@ -720,10 +729,8 @@ Magit is a wrapper and an interface around git that makes version control in Ema
       nil nil '(center repeated))
     (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
       nil nil 'bottom)
-    (git-gutter-mode)
-    :config
-    (advice-add #'magit-stage-file   :after #'+vc-gutter-update-h)
-    (advice-add #'magit-unstage-file :after #'+vc-gutter-update-h))
+    (require 'git-gutter-fringe)
+    (global-git-gutter-mode t))
 #+END_SRC
 ** Dev-Tools
 
