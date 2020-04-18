@@ -51,7 +51,7 @@ it was implemented.
     (menu-bar-mode 0)                               ; Disable the menu bar
     (tooltip-mode 0))                               ; Disable the tooltips
 
-  (global-display-line-numbers-mode)             ; Enable line numbers
+  (global-display-line-numbers-mode)                ; Enable line numbers
 
   (setq-default
    auto-window-vscroll nil                          ; Lighten vertical scroll
@@ -84,6 +84,7 @@ it was implemented.
   (global-subword-mode 1)                           ; Iterate through CamelCase words
   (set-default-coding-systems 'utf-8)               ; Default to utf-8 encoding
   (show-paren-mode 1)                               ; Show matching char
+  (setq show-paren-delay 0)
   (electric-pair-mode 1)                            ; Insert matching character
   (add-to-list
    'display-buffer-alist
@@ -178,6 +179,8 @@ it was implemented.
                   'back-to-indentation)
   (global-set-key (kbd "C-x C-b")
                   'ibuffer)
+  (define-key key-translation-map [dead-grave] "`")
+  (define-key key-translation-map [dead-circumflex] "^")
   ;; (global-set-key (kbd "M-RET")
   ;;                 (lambda ()
   ;;                   (interactive)
@@ -677,7 +680,18 @@ LSP-Backend for Company-Mode
 #+BEGIN_SRC emacs-lisp
   (use-package elpy
     :init
-    (elpy-enable))
+    (elpy-enable)
+    :config
+    (setq elpy-modules '(elpy-module-sane-defaults
+                         elpy-module-company
+                         elpy-module-eldoc
+                         elpy-module-highlight-indentation
+                         elpy-module-pyvenv
+                         elpy-module-yasnippet
+                         elpy-module-django)))
+
+  (add-hook 'python-mode-hook (lambda ()
+                                (setq flycheck-checker 'python-flake8)))
 #+END_SRC
 
 *** Structured Data Modes
