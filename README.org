@@ -127,13 +127,6 @@ it was implemented.
 ** Own functions
 
 #+BEGIN_SRC emacs-lisp
-  (defun my-run-python ()
-    (interactive)
-    (shell-command
-     (concat
-      "alacritty -e ipython -i "
-      (buffer-file-name) "&")))
-
   (defun my-compile-pandoc ()
     (interactive)
     (shell-command
@@ -179,21 +172,6 @@ it was implemented.
                   'back-to-indentation)
   (global-set-key (kbd "C-x C-b")
                   'ibuffer)
-  (define-key key-translation-map [dead-grave] "`")
-  (define-key key-translation-map [dead-circumflex] "^")
-  ;; (global-set-key (kbd "M-RET")
-  ;;                 (lambda ()
-  ;;                   (interactive)
-  ;;                   (shell-command "alacritty&")))
-  (require 'python)
-  (define-key python-mode-map
-    (kbd "C-c C-a")
-    (lambda ()
-      (interactive)
-      (shell-command
-       (concat
-        "alacritty -e ipython -i "
-        (buffer-file-name) "&"))))
 
   ;; (require 'markdown-mode)
   ;; (define-key markdown-mode-map
@@ -525,6 +503,24 @@ Pretty much selve explanatory; adds additional cursors to words/lines
     :after (ibuffer vc))
 #+END_SRC
 
+*** Shackle
+
+#+BEGIN_SRC emacs-lisp
+  (use-package shackle
+    :init
+    (shackle-mode t)
+    :config
+    (setq shackle-default-rule '(:select t)))
+#+END_SRC
+
+*** shell-pop
+
+#+BEGIN_SRC emacs-lisp
+  (use-package shell-pop
+    :bind
+    ("C-t" . 'shell-pop))
+#+END_SRC
+
 ** Snippets and Autocomplete
 
 *** Yasnippet
@@ -680,6 +676,7 @@ LSP-Backend for Company-Mode
 #+BEGIN_SRC emacs-lisp
   (use-package elpy
     :init
+    (setq python-shell-interpreter "ipython")
     (elpy-enable)
     :config
     (setq elpy-modules '(elpy-module-sane-defaults
