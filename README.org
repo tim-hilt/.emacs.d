@@ -1,0 +1,6 @@
+#+title: Tims Emacs Configuration
+#+author: Tim Hilt
+
+This repository is based on Henrik Lissners [[https://github.com/hlissner/doom-emacs/][Doom-Emacs Distribution]].
+
+I added a few adjustments and activated some packages, that i would like to adopt from previous commits.
