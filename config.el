@@ -38,41 +38,39 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
-(add-hook! 'python-mode-hook
-  (conda-env-autoactivate-mode))
-
-(setq +latex-viewers '(zathura))
-(setq TeX-save-query nil)
-
 (global-subword-mode 1)
 
-(global-disable-mouse-mode)
-(mapc #'disable-mouse-in-keymap
-      (list evil-motion-state-map
-            evil-normal-state-map
-            evil-visual-state-map
-            evil-insert-state-map))
+(use-package! conda
+  :defer t
+  :hook
+  (python-mode . conda-env-autoactivate-mode))
 
-(after! company
+(use-package! tex
+  :defer t
+  :ensure auctex
+  :config
+  (setq +latex-viewers '(zathura)
+        TeX-save-query nil))
+
+;; (use-package! disable-mouse-mode
+;;   :init
+;;   (global-disable-mouse-mode)
+;;   :bind
+;;   (mapc #'disable-mouse-in-keymap
+;;         (list evil-motion-state-map
+;;               evil-normal-state-map
+;;               evil-visual-state-map
+;;               evil-insert-state-map)))
+
+(use-package! company-mode
+  :defer t
+  :config
   (setq company-idle-delay 0
         company-minimum-prefix-length 1))
 
-(map! :map ivy-minibuffer-map
-      "RET" 'ivy-alt-done
-      "TAB" 'ivy-alt-done)
-;; Here are some additional functions/macros that could help you configure Doom:
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
+(use-package! ivy
+  :defer t
+  :bind
+  (:map ivy-minibuffer-map
+   ("RET" . 'ivy-alt-done)
+   ("TAB" . 'ivy-alt-done)))
