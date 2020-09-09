@@ -73,4 +73,6 @@
   :bind
   (:map ivy-minibuffer-map
    ("RET" . 'ivy-alt-done)
-   ("TAB" . 'ivy-alt-done)))
+   ("TAB" . 'ivy-alt-done))
+  :init
+  (setq ivy-extra-directories nil))
