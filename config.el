@@ -30,9 +30,72 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
-(setq org-roam-directory "~/org/roam/")
-(add-hook! 'after-init-hook
-           'org-roam-mode)
+
+(use-package! org-roam
+  :hook ((after-init . org-roam-mode))
+  :custom
+  (setq org-roam-directory "~/org/roam/"))
+
+(use-package! org-ref
+  :after org-roam
+  :config
+  (setq reftex-default-bibliography '("~/Hahn-Schickard/Bachelorarbeit/Arbeit/library.bib")
+        org-ref-default-bibliography '("~/Hahn-Schickard/Bachelorarbeit/Arbeit/library.bib")
+        org-ref-bibliography-notes "~/org/roam/bibnotes.org"
+        org-ref-notes-directory "~/org/roam/" ;; org-ref also knows where the notes are stored, so there must be some direct way to open them from a cite-link!
+        org-ref-notes-function 'orb-edit-notes
+        org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex))
+
+
+(use-package! ivy-bibtex
+  :after org-ref
+  :config
+  (setq bibtex-completion-notes-path "~/org/roam/"
+        bibtex-completion-bibliography "~/Hahn-Schickard/Bachelorarbeit/Arbeit/library.bib"
+        bibtex-completion-pdf-field "file"))
+
+
+(use-package! org-roam-bibtex
+  :after org-roam
+  :hook (org-roam-mode . org-roam-bibtex-mode)
+  :bind (:map org-mode-map
+         (("C-c n a" . orb-note-actions)))
+  :config
+  (setq orb-preformat-keywords
+        '("=key=" "title" "url" "file" "author-or-editor" "keywords"))
+        orb-templates
+        '(("r" "ref" plain (function org-roam-capture--get-point)
+           ""
+           :file-name "${slug}"
+           :head "#+TITLE: ${title}
+#+ROAM_KEY: ${ref}
+
+- tags ::
+- keywords :: ${keywords}
+
+* ${title}
+:PROPERTIES:
+:Custom_ID: ${=key=}
+:URL: ${url}
+:AUTHOR: ${author-or-editor}
+:NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")
+:NOTER_PAGE:
+:END:
+
+"
+           :unnarrowed t)))
+
+
+(use-package org-noter
+  :after (:any org pdf-view)
+  :config
+  (setq org-noter-notes-search-path '("~/org/roam")
+        org-noter-always-create-frame nil)) ;; Everything is relative to the main notes file
+        ;; org-noter-notes-window-location 'other-frame ;; The WM can handle splits
+        ;;  ;; Please stop opening frames
+        ;; org-noter-hide-other nil ;; I want to see the whole file
+
+
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -47,7 +110,6 @@
 
 (use-package! tex
   :defer t
-  :ensure auctex
   :config
   (setq +latex-viewers '(zathura)
         TeX-save-query nil))
@@ -62,8 +124,7 @@
 ;;               evil-visual-state-map
 ;;               evil-insert-state-map)))
 
-(use-package! company-mode
-  :defer t
+(use-package! company
   :config
   (setq company-idle-delay 0
         company-minimum-prefix-length 1))
