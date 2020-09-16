@@ -30,6 +30,7 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+(setq bibliography-files '("~/Hahn-Schickard/Bachelorarbeit/Arbeit/library.bib"))
 
 (use-package! org-roam
   :hook ((after-init . org-roam-mode))
@@ -39,20 +40,19 @@
 (use-package! org-ref
   :after org-roam
   :config
-  (setq reftex-default-bibliography '("~/Hahn-Schickard/Bachelorarbeit/Arbeit/library.bib")
-        org-ref-default-bibliography '("~/Hahn-Schickard/Bachelorarbeit/Arbeit/library.bib")
-        org-ref-bibliography-notes "~/org/roam/bibnotes.org"
-        org-ref-notes-directory "~/org/roam/" ;; org-ref also knows where the notes are stored, so there must be some direct way to open them from a cite-link!
+  (setq reftex-default-bibliography bibliography-files
+        org-ref-default-bibliography bibliography-files
+        org-ref-bibliography-notes "~/org/roam/bibnotes.org"  ;; Is this even needed?
+        org-ref-notes-directory "~/org/roam/"
         org-ref-notes-function 'orb-edit-notes
         org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex))
 
 
-(use-package! ivy-bibtex
-  :after org-ref
+(use-package! bibtex-completion
+  :defer t
   :config
   (setq bibtex-completion-notes-path "~/org/roam/"
-        bibtex-completion-bibliography "~/Hahn-Schickard/Bachelorarbeit/Arbeit/library.bib"
-        bibtex-completion-pdf-field "file"))
+        bibtex-completion-bibliography bibliography-files))
 
 
 (use-package! org-roam-bibtex
