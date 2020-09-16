@@ -62,12 +62,13 @@
          (("C-c n a" . orb-note-actions)))
   :config
   (setq orb-preformat-keywords
-        '("=key=" "title" "url" "file" "author-or-editor" "keywords"))
-        orb-templates
+        '(("citekey" . "=key=") "title" "url" "file" "author-or-editor" "keywords"))
+
+  (setq orb-templates
         '(("r" "ref" plain (function org-roam-capture--get-point)
            ""
-           :file-name "${slug}"
-           :head "#+TITLE: ${title}
+           :file-name "${citekey}"
+           :head "#+TITLE: ${citekey}: ${title}
 #+ROAM_KEY: ${ref}
 
 - tags ::
@@ -75,15 +76,12 @@
 
 * ${title}
 :PROPERTIES:
-:Custom_ID: ${=key=}
+:Custom_ID: ${citekey}
 :URL: ${url}
 :AUTHOR: ${author-or-editor}
-:NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")
+:NOTER_DOCUMENT: %(orb-process-file-field \"${citekey}\")
 :NOTER_PAGE:
-:END:
-
-"
-           :unnarrowed t)))
+:END:"))))
 
 
 (use-package org-noter
@@ -94,7 +92,6 @@
         ;; org-noter-notes-window-location 'other-frame ;; The WM can handle splits
         ;;  ;; Please stop opening frames
         ;; org-noter-hide-other nil ;; I want to see the whole file
-
 
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
