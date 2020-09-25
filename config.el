@@ -7,7 +7,12 @@
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
 (setq user-full-name "Tim Hilt"
-      user-mail-address "timhilt@live.de")
+      user-mail-address "timhilt@live.de"
+      doom-theme 'doom-one
+      org-directory "~/org/")
+
+(defvar bibliography-files '("~/texmf/bibtex/bib/local/bibliography.bib")
+  "List of bib-files; used in multiple declarations below")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -25,17 +30,13 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-(setq bibliography-files '("~/Hahn-Schickard/Bachelorarbeit/Arbeit/library.bib"))
 
 (use-package! org-roam
+  :defer t
   :hook ((after-init . org-roam-mode))
   :custom
   (setq org-roam-directory "~/org/roam/"))
+
 
 (use-package! org-ref
   :after org-roam
@@ -52,7 +53,12 @@
   :defer t
   :config
   (setq bibtex-completion-notes-path "~/org/roam/"
+        bibtex-completion-pdf-field "file"
         bibtex-completion-bibliography bibliography-files))
+
+
+(defvar orb-title-format "${author-or-editor-abbrev} (${date}).  ${title}."
+  "Format of the title to use for `orb-templates'.")
 
 
 (use-package! org-roam-bibtex
@@ -62,36 +68,55 @@
          (("C-c n a" . orb-note-actions)))
   :config
   (setq orb-preformat-keywords
-        '(("citekey" . "=key=") "title" "url" "file" "author-or-editor" "keywords"))
-
-  (setq orb-templates
-        '(("r" "ref" plain (function org-roam-capture--get-point)
+        '(("citekey" . "=key=") "title" "date" "author-or-editor-abbrev")
+        orb-templates
+        `(("r" "ref" plain
+           (function org-roam-capture--get-point)
            ""
            :file-name "${citekey}"
-           :head "#+TITLE: ${citekey}: ${title}
-#+ROAM_KEY: ${ref}
+           :head ,(s-join "\n"
+                          (list
+                           (concat "#+TITLE: " orb-title-format)
+                           "#+ROAM_KEY: ${ref}"
+                           ""
+                           "- tags :: "
+                           ""
+                           "* Notes"
+                           ""))
+           :unnarrowed t)
+          ("n" "ref + noter" plain
+           (function org-roam-capture--get-point)
+           ""
+           :file-name "${citekey}"
+           :head ,(s-join "\n"
+                          (list
+                           (concat "#+TITLE: " orb-title-format)
+                           "#+ROAM_KEY: ${ref}"
+                           ""
+                           "- tags :: "
+                           ""
+                           "* Annotations :noter:"
+                           ":PROPERTIES:"
+                           ":NOTER_DOCUMENT: %(orb-process-file-field \"${citekey}\")"
+                           ":NOTER_PAGE:"
+                           ":END:"
+                           ""))))))
 
-- tags ::
-- keywords :: ${keywords}
 
-* ${title}
-:PROPERTIES:
-:Custom_ID: ${citekey}
-:URL: ${url}
-:AUTHOR: ${author-or-editor}
-:NOTER_DOCUMENT: %(orb-process-file-field \"${citekey}\")
-:NOTER_PAGE:
-:END:"))))
+(map! :after pdf-tools
+      :map pdf-view-mode-map
+      :gn "q" (lambda ()
+                (interactive)
+                (if (bound-and-true-p org-noter-doc-mode)
+                    (org-noter-kill-session)
+                  (kill-current-buffer))))
 
 
 (use-package org-noter
   :after (:any org pdf-view)
   :config
   (setq org-noter-notes-search-path '("~/org/roam")
-        org-noter-always-create-frame nil)) ;; Everything is relative to the main notes file
-        ;; org-noter-notes-window-location 'other-frame ;; The WM can handle splits
-        ;;  ;; Please stop opening frames
-        ;; org-noter-hide-other nil ;; I want to see the whole file
+        org-noter-always-create-frame nil))
 
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -102,8 +127,7 @@
 
 (use-package! conda
   :defer t
-  :hook
-  (python-mode . conda-env-autoactivate-mode))
+  :hook (python-mode . conda-env-autoactivate-mode))
 
 (use-package! tex
   :defer t
@@ -124,7 +148,9 @@
 (use-package! company
   :config
   (setq company-idle-delay 0
-        company-minimum-prefix-length 1))
+        company-minimum-prefix-length 1
+        company-global-modes '(not org-mode)))
+
 
 (use-package! ivy
   :defer t
