@@ -8,7 +8,7 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
-;; (package! disable-mouse)
+(package! disable-mouse)
 (package! org-ref)
 (package! org-noter)
 (package! s)
@@ -56,5 +56,4 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 (unpin! org-roam company-org-roam)
-
 (unpin! bibtex-completion ivy-bibtex)

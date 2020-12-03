@@ -131,19 +131,21 @@
 
 (use-package! tex
   :defer t
+  :init
+  (setq-default TeX-engine 'luatex)
   :config
   (setq +latex-viewers '(zathura)
         TeX-save-query nil))
 
-;; (use-package! disable-mouse-mode
-;;   :init
-;;   (global-disable-mouse-mode)
-;;   :bind
-;;   (mapc #'disable-mouse-in-keymap
-;;         (list evil-motion-state-map
-;;               evil-normal-state-map
-;;               evil-visual-state-map
-;;               evil-insert-state-map)))
+(use-package! disable-mouse
+  :init
+  (global-disable-mouse-mode)
+  :config
+  (mapc #'disable-mouse-in-keymap
+        (list evil-motion-state-map
+              evil-normal-state-map
+              evil-visual-state-map
+              evil-insert-state-map)))
 
 (use-package! company
   :config
