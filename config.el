@@ -14,6 +14,8 @@
 (defvar bibliography-files '("~/texmf/bibtex/bib/local/bibliography.bib")
   "List of bib-files; used in multiple declarations below")
 
+(add-to-list 'auto-mode-alist '("\\.tikz\\'" . latex-mode))
+
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
 ;;
@@ -132,7 +134,7 @@
 (use-package! tex
   :defer t
   :init
-  (setq-default TeX-engine 'luatex)
+  (setq-default TeX-command-extra-options "--shell-escape")
   :config
   (setq +latex-viewers '(zathura)
         TeX-save-query nil))
